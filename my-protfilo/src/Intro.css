@@ -1,7 +1,8 @@
 .profile {
             background-color: #d8e9ef;
             width: 92%;      
-            height: 400px;        
+            height: 400px;  
+            margin-bottom: 300px;      
             border-radius: 50%;
             border: 2px solid black;
             background-image: url("../images/9cf4ea19-1a03-4a15-b721-4b1b8ffda988_removalai_preview.png");
@@ -121,6 +122,7 @@
         }
 
     .circles {
+        margin-left: 42px;
   margin-top: 23px;
   list-style: none;
   display: flex;
@@ -137,7 +139,7 @@
             text-align: center;
             align-content: center;
             height: 130px;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 600;
             background: linear-gradient(135deg, #FF6B6B, #FF8E53);
             border: 3px solid rgba(255, 255, 255, 0.3);
@@ -154,9 +156,9 @@
         .circle2 {
             border-radius: 50%;
             cursor: pointer;
-            width: 135px;
-            height: 135px;
-            font-size: 24px;
+             width: 130px;
+            height: 130px;
+              font-size: 22px;
             font-weight: 600;
             text-align: center;
             align-content: center;
@@ -178,9 +180,9 @@
             cursor: pointer;
             text-align: center;
             align-content: center;
-             width: 135px;
-            height: 135px;
-            font-size: 24px;
+             width: 130px;
+            height: 130px;
+              font-size: 22px;
             font-weight: 600;
             background: linear-gradient(135deg, #A8E063, #56AB2F);
             border: 3px solid rgba(255, 255, 255, 0.3);
@@ -322,62 +324,4 @@
             width: 92%;
         }
 
-        .container {
-            margin: auto;
-            display: flex;
-            margin-top: 55px;
-            margin-bottom: 100px;
-            flex-direction: row;
-            width: 1600px;
-            font-size: 20px;
-            gap: 20px;   
-            font-weight: 530;
-            text-align: center;           
-        }
-
-        .container div {
-            width: 100%;
-            display: inline-block;
-            gap: 10px;
-            flex-direction: row;
-        }
-
-        a img {
-            width: 30px;
-            height: 30px;
-        }
-
-        .email {
-            margin-top: 10px;
-            display: flex;
-            align-self: center;
-        }
-
-.social-media {
-  display: flex;      
-   gap: 20px; }
-
-
-
-        .social-media img {
-            transition: transform 0.3s ease-out;
-            width: 30px;
-            height: 30px;
-            margin-left: 20px;
-            
-            
-        }
-        .phone{ 
-              width: 30px;
-            height: 30px;
-            gap: 20px;
-        }
-         
-        .social-media img:hover {
-            transform: scale(1.4);
-        }  
-             .phone{ 
-              width: 30px;
-            height: 30px;
-            gap: 20px;
-        }
+        

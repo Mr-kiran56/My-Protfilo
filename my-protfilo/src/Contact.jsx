@@ -1,12 +1,10 @@
-import Background from "./Background";
 import "./Contact.css";
-import "./App.css"
+import "./App.css";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
 
 function Contact() {
   return (
-    < >
+    <>
       <div className="container-detail">
         <div className="details">
           <h1>Contact</h1>
@@ -45,7 +43,7 @@ function Contact() {
 
             <div style={{ marginTop: "30px" }}>
               <label htmlFor="message">Message</label><br />
-              <textarea id="text-area" rows="5" ></textarea>
+              <textarea id="text-area" rows="5"></textarea>
             </div>
 
             <div className="btn-div">
@@ -57,10 +55,9 @@ function Contact() {
         </div>
       </div>
 
-      <hr style={{ width: "93.5%", opacity: 0.9, marginTop: "340px" }} />
+      <hr style={{ width: "93.5%", opacity: 0.9,margin:" auto"}} />
 
-      <Footer/>
-
+      <Footer />
     </>
   );
 }

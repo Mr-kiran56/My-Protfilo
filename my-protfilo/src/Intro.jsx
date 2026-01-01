@@ -1,9 +1,6 @@
 import "./Intro.css";
 import "./App.css"
-import Background  from "./Background";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
-import Navbar from "./Navbar";
 function Intro() {
   return (
     <>
@@ -28,7 +25,7 @@ function Intro() {
         </div>
       </div>
 
-      <hr className="br-line" />
+      <hr className="br-line" style={{ margin:"auto"}} />
 
       <Footer/>
     </>

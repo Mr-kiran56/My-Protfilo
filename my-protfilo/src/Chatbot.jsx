@@ -1,75 +1,65 @@
-import "./Chatbot.css"
+import "./Contact.css";
+import "./App.css";
+import Footer from "./Footer";
 
-function Chatbot(){
-    return (
-        <>
-         <div className="chat-container">
-        <div className="chat-messages" id="chatMessages">
-            <div className="welcome-message">
-                <h2>Welcome to AI Assistant</h2>
-                <p>How can I help you today?</p>
-            </div>
-
-            <div className="message bot">
-                <div className="message-avatar">AI</div>
-                <div className="message-content">
-                    Hello! I'm your AI assistant. Feel free to ask me anything!
-                </div>
-            </div>
-
-            <div className="message user">
-                <div className="message-avatar">U</div>
-                <div className="message-content">
-                    Tell me about your capabilities
-                </div>
-            </div>
-
-              <div className="message user">
-                <div className="message-avatar">U</div>
-                <div className="message-content">
-                    Tell me about your capabilities
-                </div>
-            </div>
-            
-              <div className="message user">
-                <div className="message-avatar">U</div>
-                <div className="message-content">
-                    Tell me about your capabilities
-                </div>
-            </div>
-            
-              <div className="message user">
-                <div className="message-avatar">U</div>
-                <div className="message-content">
-                    Tell me about your capabilities
-                </div>
-            </div>
-            
-            
-
-            <div className="message bot">
-                <div className="message-avatar">AI</div>
-                <div className="message-content">
-                    I can help you with various tasks including answering questions, providing information, helping with code, creative writing, and much more. What would you like to know?
-                </div>
-            </div>
-
-            
+function Contact() {
+  return (
+    <>
+      <div className="container-detail">
+        <div className="details">
+          <h1>Contact</h1>
+          <p>Looking forward to hearing from you</p>
+          <h3>Phone</h3>
+          <p>+91 9381911235</p>
+          <h3>Email</h3>
+          <p>kiranpunna58@gmail.com</p>
         </div>
 
+        <div className="form-detail" style={{ marginTop: "18px" }}>
+          <form>
+            <div className="first-input">
+              <div>
+                <label htmlFor="first-name">First Name *</label>
+                <input type="text" id="first-name" />
+              </div>
 
-        <div className="input-container">
-            <input 
-                type="text" 
-                className="chat-input" 
-                id="chatInput" 
-                placeholder="Type your message here..."
-                autocomplete="off"
-            />
-            <button className="send-button" id="sendButton">Send</button>
+              <div>
+                <label htmlFor="last-name">Last Name *</label>
+                <input type="text" id="last-name" />
+              </div>
+            </div>
+
+            <div className="first-input" style={{ marginTop: "30px" }}>
+              <div>
+                <label htmlFor="email">Email *</label>
+                <input type="email" id="email" />
+              </div>
+
+              <div>
+                <label htmlFor="subject">Subject</label>
+                <input type="text" id="subject" />
+              </div>
+            </div>
+
+            <div style={{ marginTop: "30px" }}>
+              <label htmlFor="message">Message</label><br />
+              <textarea id="text-area" rows="5"></textarea>
+            </div>
+
+            <div className="btn-div">
+              <button className="btn" type="submit">
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
-    </div>
-        </>
-    );
+      </div>
+
+      <hr style={{ width: "93.5%", opacity: 0.9, marginTop: "340px" }} />
+
+      <Footer />
+    </>
+  );
 }
-export default Chatbot;
+
+export default Contact;

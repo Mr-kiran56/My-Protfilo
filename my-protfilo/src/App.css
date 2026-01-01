@@ -14,7 +14,7 @@ body {
   position: relative;
 }
 
-/* Animated Background */
+
 body::before {
   content: '';
   position: fixed;
@@ -222,6 +222,7 @@ body::before {
   margin: 14px auto;
 
   padding: 0 40px;
+  position: absolute;
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -261,7 +262,7 @@ body::before {
             flex-direction: row;
             width: 1200px;
             height: 70px;
-            font-size: 10px;
+            font-size: 14px;
             gap: 20px;   
             font-weight: 530;
             text-align: center;    
@@ -294,28 +295,32 @@ body::before {
             align-self: center;
         }
 .social-media {
-  display: flex;      /* puts images in a row */
-  gap: 20px;          /* space between images */
+  display: flex;     
+  gap: 20px;          
 }
 
 
         .social-media img {
-            transition: transform 0.3s ease-out;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
             width: 30px;
             height: 30px;
             margin-left: 20px;
             
             
         }
+
+      
+
+
         .phone{
              width: 30px;
             height: 30px;
             gap: 20px;
         }
          
-        .social-media img:hover {
-            transform: scale(1.4);
-            cursor: pointer;
-        }
 
+.social-media img:hover {
+  cursor: pointer;
+    transform: scale(0.3) rotate(45deg) translateY(-3px);
+}
         

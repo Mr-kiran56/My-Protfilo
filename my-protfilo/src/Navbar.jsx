@@ -9,17 +9,17 @@ function Navbar() {
           className="logo"
           style={{ fontFamily: "Caveat, cursive", fontSize: "40px" }}
         >
-          Punna.in
+            <Link to="/" className="header-home1">Punna.in </Link>
         </li>
 
         <li>
-          <Link to="/chatbot" className="header-home1">Resume |</Link>
+          <Link to="/resume"  className="header-home1">Resume </Link>
         </li>
         <li>
-          <a href="/" className="header-home1">Projects |</a>
+          <Link to="/project" className="header-home1">Projects </Link>
         </li>
         <li>
-          <Link to="/contact" className="header-home1">Contact</Link>
+          <Link to="/contact"  className="header-home1">Contact</Link>
         </li>
       </ul>
     </header>
