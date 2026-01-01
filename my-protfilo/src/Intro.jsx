@@ -1,24 +1,13 @@
 import "./Intro.css";
-
+import "./App.css"
+import Background  from "./Background";
+import Footer from "./Footer";
+import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
 function Intro() {
   return (
     <>
-    
-
-      {/* <header>
-        <ul className="header-home">
-          <li
-            className="logo"
-            style={{ fontFamily: "Caveat, cursive", fontSize: "40px" }}
-          >
-            Punna.in
-          </li>
-          <li><a className="header-home1" href="/resume">Resume |</a></li>
-          <li><a className="header-home1" href="/projects">Projects |</a></li>
-          <li><a className="header-home1" href="/contact">Contact</a></li>
-        </ul>
-      </header> */}
-
+    {/* <Background/> */}
       <div className="main">
         <div className="profile"></div>
 
@@ -41,34 +30,7 @@ function Intro() {
 
       <hr className="br-line" />
 
-      {/* <footer className="container">
-        <div>
-          <b>Phone</b>
-          <div>
-            <img src="/images/viber.png" style={{height:"30px"}} alt="phone" /> +91 9381911235
-          </div>
-        </div>
-
-        <div>
-          <b>Email</b>
-          <div className="email">kiranpunna58@gmail.com</div>
-        </div>
-
-        <div>
-          <div style={{ marginBottom: "15px" }}>
-            <b>Follow Me On</b>
-          </div>
-          <div className="social-media">
-          <a> <img src="/images/linkedin.png" alt="linkedin" /></a> 
-            <a><img src="/images/github-sign.png" alt="github" /></a>
-            <a><img src="/images/instagram.png" alt="instagram" /></a>
-          </div>
-        </div>
-
-        <div style={{ opacity: 0.6, fontSize: "14px" }}>
-          ⓒ Kiran Punna 2025
-        </div>
-      </footer> */}
+      <Footer/>
     </>
   );
 }

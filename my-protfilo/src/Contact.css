@@ -1,6 +1,6 @@
 
         .container-detail {
-            padding-top: 100px;
+            padding-top: 200px;
             margin: auto;
             display: flex;
             margin-top: 30px;
@@ -33,11 +33,11 @@
         }
 
         .first-input div {
-            width: 80%;
+            width: 100%;
         }
 
         .first-input input {
-            height: 40px;
+            height: 37px;
             width: 90%;
         }
 
@@ -107,7 +107,7 @@
 
         .btn {
             width: 22%;
-            height: 42px;
+            height: 37px;
             font-size: 25px;
             border-radius: 13px;
             background-color: black;
@@ -144,7 +144,7 @@
         }
 
         form input {
-            font-size: 20px;
+            font-size: 17px;
         }
 
         label {
@@ -160,13 +160,13 @@
         input {
             border-radius: 12px;
             border: 1px solid #ccc;
-            padding: 9px;
+            /* padding: 1px; */
         }
 
         textarea {
             border-radius: 10px;
-            font-size: 20px;
-            width: 501px;
+            font-size: 17px;
+            width: 500px;
             border: 1px solid #ccc;
             /* padding: 8px; */
         }

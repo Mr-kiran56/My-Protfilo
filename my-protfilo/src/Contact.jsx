@@ -1,30 +1,12 @@
+import Background from "./Background";
 import "./Contact.css";
+import "./App.css"
+import Footer from "./Footer";
+import { Link } from "react-router-dom";
 
 function Contact() {
   return (
     < >
-
-      
-      {/* <div className="color-orb orb1"></div>
-      <div className="color-orb orb2"></div>
-      <div className="color-orb orb3"></div>
-      <div className="color-orb orb4"></div>
-      <div className="color-orb orb5"></div>
-
-      <header>
-        <ul className="header-home">
-          <li
-            className="logo"
-            style={{ fontFamily: "Caveat, cursive", fontSize: "40px" }}
-          >
-            Punna.in
-          </li>
-          <li><a className="header-home1" href="#">Resume |</a></li>
-          <li><a className="header-home1" href="#">Projects |</a></li>
-          <li><a className="header-home1" href="#">Contact</a></li>
-        </ul>
-      </header> */}
-
       <div className="container-detail">
         <div className="details">
           <h1>Contact</h1>
@@ -63,7 +45,7 @@ function Contact() {
 
             <div style={{ marginTop: "30px" }}>
               <label htmlFor="message">Message</label><br />
-              <textarea id="text-area" rows="5"></textarea>
+              <textarea id="text-area" rows="5" ></textarea>
             </div>
 
             <div className="btn-div">
@@ -76,35 +58,8 @@ function Contact() {
       </div>
 
       <hr style={{ width: "93.5%", opacity: 0.9, marginTop: "340px" }} />
-{/* 
-      <footer className="container">
-        <div>
-          <b>Phone</b>
-          <div>
-            <img  className="phone" src="/images/viber.png" alt="phone" /> +91 9381911235
-          </div>
-        </div>
 
-        <div>
-          <b>Email</b>
-          <div className="email">kiranpunna58@gmail.com</div>
-        </div>
-
-       <div>
-          <div style={{ marginBottom: "15px" }}>
-            <b>Follow Me On</b>
-          </div>
-          <div className="social-media">
-          <a> <img src="/images/linkedin.png" alt="linkedin" /></a> 
-            <a><img src="/images/github-sign.png" alt="github" /></a>
-            <a><img src="/images/instagram.png" alt="instagram" /></a>
-          </div>
-        </div>
-
-        <div style={{ opacity: 0.6, fontSize: "18px" }}>
-          ⓒ Kiran Punna 2025
-        </div>
-      </footer> */}
+      <Footer/>
 
     </>
   );

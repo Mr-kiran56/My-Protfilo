@@ -1,0 +1,38 @@
+.header-home {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  list-style: none;
+  font-size: 17px;
+  gap: 12px;
+  padding: 0px 40px;
+  width: 100%;
+}
+
+
+.header-home li:not(.logo):first-of-type {
+  margin-left: auto;
+}
+
+
+        .logo {
+            margin-right: auto;
+            font-size: 80px;
+            font-weight: bold;
+        }
+
+        .header-home li a {
+            text-decoration: none;
+            color: black;
+            margin-left: 0px;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block; 
+        }
+
+        .header-home li a:hover {
+            color: whitesmoke;
+            transform: scale(1.2); 
+            cursor: pointer;
+        }
+

@@ -1,16 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Contact from './Contact'
-import Chatbot from './chatbot'
+import { Routes, Route } from "react-router-dom";
+import Intro from "./Intro";
+import Contact from "./Contact";
+import Navbar from "./Navbar";
+import Background from "./Background";
+import Footer from "./Footer"
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-  <Chatbot/>
-  )
+  <>
+  <Background/>
+  <Navbar />
+  <Routes>
+    <Route path="/" element={<Intro />} />
+    <Route path="/contact" element={<Contact />} />
+  </Routes>
+</>
+
+  );
 }
 
-export default App
+export default App;

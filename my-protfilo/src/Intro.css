@@ -67,7 +67,7 @@
             max-width: 1000px;
             margin: auto;
             display: flex;
-            margin-top: 100px;
+            margin-top: 200px;
            
         }
 
@@ -322,7 +322,7 @@
             width: 92%;
         }
 
-        /* .container {
+        .container {
             margin: auto;
             display: flex;
             margin-top: 55px;
@@ -354,12 +354,12 @@
         }
 
 .social-media {
-  display: flex;      /* puts images in a row */
-  /* gap: 20px;          /* space between images */
+  display: flex;      
+   gap: 20px; }
 
 
 
-        /* .social-media img {
+        .social-media img {
             transition: transform 0.3s ease-out;
             width: 30px;
             height: 30px;
@@ -375,7 +375,7 @@
          
         .social-media img:hover {
             transform: scale(1.4);
-        }  */
+        }  
              .phone{ 
               width: 30px;
             height: 30px;
