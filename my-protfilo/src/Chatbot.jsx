@@ -53,7 +53,10 @@ function Chatbot(){
                     I can help you with various tasks including answering questions, providing information, helping with code, creative writing, and much more. What would you like to know?
                 </div>
             </div>
+
+            
         </div>
+
 
         <div className="input-container">
             <input 

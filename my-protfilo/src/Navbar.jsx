@@ -13,7 +13,7 @@ function Navbar() {
         </li>
 
         <li>
-          <a href="/" className="header-home1">Resume |</a>
+          <Link to="/chatbot" className="header-home1">Resume |</Link>
         </li>
         <li>
           <a href="/" className="header-home1">Projects |</a>
