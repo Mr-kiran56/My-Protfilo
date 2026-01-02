@@ -31,7 +31,7 @@
         }
 
         .header-home li a:hover {
-            color: whitesmoke;
+            color: rgb(70, 172, 241);
             transform: scale(1.2); 
             cursor: pointer;
         }

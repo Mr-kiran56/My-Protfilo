@@ -9,6 +9,7 @@
 
         .btn-resume {
             height: 40px;
+       
             padding: 0 22px;
             border-radius: 25px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -30,7 +31,7 @@
         .resume-container {
 
             max-width: 1050px;
-            margin: 100px auto ;
+            margin: 40px auto ;
             padding: 50px;
                  opacity: 0;
     transform: translate3d(0, 120px, 0);

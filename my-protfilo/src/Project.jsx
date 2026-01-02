@@ -1,12 +1,14 @@
 import Footer from "./Footer";
 import "./Project.css";
 import "./App.css"
+import SideCard  from "./SideCard";
 
 export default function Projects() {
   return (
     <>
  
       <div className="projects-container" id="projects">
+        <SideCard/>
         <h1 className="projects-title">Projects</h1>
 
         {/* Project 1 */}

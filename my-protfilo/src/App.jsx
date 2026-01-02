@@ -3,7 +3,7 @@ import Intro from "./Intro";
 import Contact from "./Contact";
 import Navbar from "./Navbar";
 import Background from "./Background";
-import Chatbot from "./chatbot";
+import Chatbot from "./Chatbot";
 import Resume from "./Resume";
 import Project  from "./Project";
 import { useState } from "react";
@@ -37,8 +37,10 @@ setTimeout(() => {
     <Route path="/" element={<Intro ShowAlert={ShowAlert} />} />
     <Route path="/contact" element={<Contact />} />
     <Route path="/resume" element={<Resume />} />
-    <Route path="/project" element={<Project/>}
-/>  
+    <Route path="/project" element={<Project/>}/>
+
+    <Route path="/chatbot" element={<Chatbot/>}/>
+
 </Routes>
 </>
 

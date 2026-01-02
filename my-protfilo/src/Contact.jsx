@@ -1,11 +1,13 @@
 import "./Contact.css";
 import "./App.css";
 import Footer from "./Footer";
+import SideCard from "./SideCard";
 
 function Contact() {
   return (
     <>
       <div className="container-detail">
+        <SideCard/>
         <div className="details">
           <h1>Contact</h1>
           <p>Looking forward to hearing from you</p>
@@ -55,7 +57,7 @@ function Contact() {
         </div>
       </div>
 
-      <hr style={{ width: "93.5%", opacity: 0.9,margin:" auto"}} />
+      <hr style={{ width: "93.5%", opacity: 0.3,margin:" auto"}} />
 
       <Footer />
     </>

@@ -1,6 +1,7 @@
 import "./Resume.css"
 import "./App.css"
 import Footer from "./Footer";
+import SideCard from "./SideCard";
 
 function Resume(){
     return(
@@ -8,7 +9,7 @@ function Resume(){
        
 
     <div className="resume-container">
-        
+        <SideCard/>
 
         <div className="btn-div">
         <button className="btn-resume">Download Resume</button>

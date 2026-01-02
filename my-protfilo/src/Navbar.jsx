@@ -5,7 +5,7 @@ import Alert from "./Alert"
 function Navbar() {
   return (
     <>
-    <header>
+    <header style={{ marginBottom:"100px"}}>
       <ul className="header-home">
         <li
           className="logo"
@@ -24,7 +24,10 @@ function Navbar() {
           <Link to="/contact"  className="header-home1">Contact</Link>
         </li>
       </ul>
+      
     </header>
+
+    
     </>
     
   );
