@@ -1,37 +1,23 @@
-import "./App.css"
+import "./App.css";
 
 function Background() {
   return (
     <>
-   
-      <div class="color-orb orb1"></div>
-      <div class="color-orb orb2"></div>
-      <div class="color-orb orb3"></div>
-      <div class="color-orb orb4"></div>
-      <div class="color-orb orb5"></div>
-    
-          <div class="particle particle1"></div>
-    <div class="particle particle2"></div>
-    <div class="particle particle3"></div>
-          <div class="particle particle1"></div>
-    <div class="particle particle2"></div>
-    <div class="particle particle3"></div>
-      <div class="particle particle4"></div>
-    <div class="particle particle5"></div>
-    <div class="particle particle6"></div>
-         <div class="particle particle4"></div>
-    <div class="particle particle5"></div>
-    <div class="particle particle6"></div>
-         <div class="particle particle4"></div>
-    <div class="particle particle5"></div>
-    <div class="particle particle6"></div>
-      
-     
-         <div class="particle particle7"></div>
-    <div class="particle particle8"></div>
-    
-         <div class="particle particle7"></div>
-    <div class="particle particle8"></div>
+      <div className="particles">
+        {Array.from({ length: 25 }).map((_, i) => (
+          <span
+            key={i}
+            className="particle"
+            style={{
+              "--size": `${20 + Math.random() * 80}px`,
+              "--x": `${Math.random() * 100}%`,
+              "--y": `${Math.random() * 100}%`,
+              "--duration": `${12 + Math.random() * 18}s`,
+              "--delay": `${Math.random() * 5}s`,
+            }}
+          ></span>
+        ))}
+      </div>
     </>
   );
 }
