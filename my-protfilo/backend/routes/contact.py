@@ -11,7 +11,7 @@ router=APIRouter(
 
 @router.post('/',status_code=status.HTTP_201_CREATED)
 def Contact_Post(request:schema.ContactDetail,db:Session=Depends(get_db)):
-    contact_request=models.Contact(first_name=request.firstname,second_name=request.secondname,email=request.email,subject=request.subject,message=request.message)
+    contact_request=models.CONTACT(first_name=request.firstname,second_name=request.secondname,email=request.email,subject=request.subject,message=request.message)
 
     db.add(contact_request)
     db.commit()
