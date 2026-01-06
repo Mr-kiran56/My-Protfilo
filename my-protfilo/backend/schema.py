@@ -27,7 +27,6 @@ class ProjectShow(ProjectsDetail):
 class Comments(BaseModel):
     project_id:int
     comment:str
-    username:str
     
 class User(BaseModel):
     email:EmailStr
@@ -47,6 +46,7 @@ class TokenData(BaseModel):
 class Token(BaseModel):
     access_token:str
     token_type:str
+    
 class ProjectUpvote(BaseModel):
     project_id:int
     dir:conint(le=1)
