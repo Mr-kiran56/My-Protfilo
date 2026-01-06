@@ -7,14 +7,14 @@ from sqlalchemy.orm import relationship
 
 class CREATEUSER(Base):
     __tablename__="createuser"
-    user_id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, primary_key=True, index=True,unique=True)
     username=Column(String,nullable=False)
     email=Column(String,nullable=False,unique=True)
     password=Column(String,nullable=False)
     created_at=Column(TIMESTAMP(timezone=True),server_default=(('now()')))
-    usercomments=relationship('COMMENTS',back_populates='comments')
-    userprofileupvote=relationship('PROFILE_UPVOTE',back_populates='profile_upvote')
-    userprojectupvote=relationship('PROJECT_UPVOTE').back_populates('project_upvote')
+    usercomments=relationship('COMMENTS',back_populates='comments_user')
+    userprofileupvote=relationship('PROFILE_UPVOTE',back_populates='profile_upvote_ent')
+    userprojectupvote=relationship('PROJECT_UPVOTE',back_populates='project_upvote')
     
 
 class CONTACT(Base):
@@ -31,8 +31,6 @@ class CONTACT(Base):
         server_default=text("now()"))
     
 
-    
-
 class PROJECTS(Base):
     __tablename__='projects'
 
@@ -44,27 +42,41 @@ class PROJECTS(Base):
     PreviewLink=Column(String)
     ImageUrl=Column(String,nullable=False)
 
-class COMMENTS(Base):
-    __tablename__='comments'
 
-    user_id=Column(Integer,ForeignKey('contact.user_id',ondelete='CASCADE'))
-    project_id=Column(Integer,nullable=False,primary_key=True)
-    comment=Column(String,nullable=False)
-    username=Column(String,ForeignKey('createuser.username',ondelete='CASCADE'))
-    comments=relationship('CREATEUSER',back_populates='usercomments')
+class COMMENTS(Base):
+    __tablename__ = 'comments'
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('createuser.user_id', ondelete='CASCADE'))
+    project_id = Column(Integer, ForeignKey('projects.project_id', ondelete='CASCADE'))
+    comment = Column(String, nullable=False)
+
+    comments_user = relationship('CREATEUSER', back_populates='usercomments')
+
 
 class PROFILE_UPVOTE(Base):
-    __tablename__='profile_upvote'
-    user_id=Column(Integer,ForeignKey('createuser.user_id',ondelete='CASCADE'))
-    profile_upvote=relationship('CREATEUSER',back_populates='userprofileupvote')
+    __tablename__ = 'profile_upvote'
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('createuser.user_id', ondelete='CASCADE'))
+
+    profile_upvote_ent = relationship(
+        'CREATEUSER',
+        back_populates='userprofileupvote'
+    )
+
 
 class PROJECT_UPVOTE(Base):
-    __tablename__='project_upvotes'
-    user_id=Column(Integer,ForeignKey('createuser.user_id',ondelete='CASCADE'))
-    project_id=Column(Integer,nullable=False,unique=True)
-    project_upvote=relationship('CREATEUSER',back_populates='userprojectupvote')
+    __tablename__ = 'project_upvotes'
 
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('createuser.user_id', ondelete='CASCADE'))
+    project_id = Column(Integer, ForeignKey('projects.project_id', ondelete='CASCADE'))
 
+    project_upvote = relationship(
+        'CREATEUSER',
+        back_populates='userprojectupvote'
+    )
 
 
     

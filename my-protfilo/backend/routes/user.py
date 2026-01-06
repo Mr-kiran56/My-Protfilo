@@ -24,7 +24,7 @@ def user_creation(request:schema.User,db:Session=Depends(get_db)):
 def getuser(user_id:int,db:Session=Depends(get_db)):
     user=db.query(models.CREATEUSER).filter(models.CREATEUSER.user_id==user_id).first()
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="User with this ID {user_id} not found ")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"User with this ID {user_id} not found ")
     return user
 
 
