@@ -1,12 +1,19 @@
 html, body, #root {
-min-height: 100vh;
-scroll-behavior: smooth;
+  min-height: 100vh;
+  scroll-behavior: smooth;
 
+  /* 🔒 HIDE SCROLLBAR (Firefox / IE) */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* 🔒 HIDE SCROLLBAR (Chrome / Safari) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 body {
-
-
   margin: 0;
   background-color: #f3f3f3;
   font-family: "Montserrat", sans-serif;
@@ -16,6 +23,15 @@ body {
   position: relative;
 }
 
+/* Optional class-based hide (you already had this) */
+.hide-scroll {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE / Edge */
+}
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;              /* Chrome / Safari */
+}
 
 body::before {
   content: '';
@@ -39,9 +55,10 @@ body::before {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
 /* Make sure body doesn't hide particles */
 body {
-  background: #0b0f1a; /* dark background */
+  background: #0b0f1a;
   overflow-x: hidden;
 }
 
@@ -49,7 +66,7 @@ body {
 .particles {
   position: fixed;
   inset: 0;
-  z-index: 0; /* NOT -1 */
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -87,11 +104,11 @@ body {
     transform: translateY(-800px) translateX(-40px);
   }
 }
-  .main {
+
+.main {
   position: relative;
   z-index: 1;
 }
-
 
 #root {
   min-height: 100vh;        
@@ -99,145 +116,134 @@ body {
   flex-direction: column;
 }
 
-
-    .color-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            z-index: -1;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        .orb1 {
-            width: 300px;
-            height: 300px;
-            background: rgba(144, 238, 144, 0.5);
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .orb2 {
-            width: 250px;
-            height: 250px;
-            background: rgba(255, 255, 102, 0.5);
-            top: 60%;
-            right: 15%;
-            animation-delay: 5s;
-        }
-
-        .orb3 {
-            width: 350px;
-            height: 350px;
-            background: rgba(255, 182, 193, 0.5);
-            bottom: 10%;
-            left: 50%;
-            animation-delay: 10s;
-        }
-
-        .orb4 {
-            width: 280px;
-            height: 280px;
-            background: rgba(173, 216, 230, 0.5);
-            top: 30%;
-            right: 30%;
-            animation-delay: 3s;
-        }
-
-        .orb5 {
-            width: 200px;
-            height: 200px;
-            background: rgba(221, 160, 221, 0.5);
-            bottom: 30%;
-            left: 20%;
-            animation-delay: 7s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-            }
-            25% {
-                transform: translate(50px, 50px) scale(1.1);
-            }
-            50% {
-                transform: translate(-30px, 80px) scale(0.9);
-            }
-            75% {
-                transform: translate(40px, -40px) scale(1.05);
-            }
-        }
-
-
-        .container {
-            margin: auto;
-            display: flex;
-            margin-top: 55px;
-            margin-bottom: 100px;
-            flex-direction: row;
-            width: 1200px;
-            height: 70px;
-            font-size: 14px;
-            gap: 20px;   
-            font-weight: 530;
-            text-align: center;    
-              
-        }
-
-        
-@keyframes smoothFadeUp {
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
+.color-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  z-index: -1;
+  animation: float 20s ease-in-out infinite;
 }
 
-        .container div {
-            width: 90%;
-            display: inline-block;
-            gap: 10px;
-            flex-direction: row;
-        }
+.orb1 {
+  width: 300px;
+  height: 300px;
+  background: rgba(144, 238, 144, 0.5);
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
 
-        a img {
-            width: 30px;
-            height: 30px;
-        }
+.orb2 {
+  width: 250px;
+  height: 250px;
+  background: rgba(255, 255, 102, 0.5);
+  top: 60%;
+  right: 15%;
+  animation-delay: 5s;
+}
 
-        .email {
-            margin-top: 10px;
-            display: flex;
-            align-self: center;
-        }
+.orb3 {
+  width: 350px;
+  height: 350px;
+  background: rgba(255, 182, 193, 0.5);
+  bottom: 10%;
+  left: 50%;
+  animation-delay: 10s;
+}
+
+.orb4 {
+  width: 280px;
+  height: 280px;
+  background: rgba(173, 216, 230, 0.5);
+  top: 30%;
+  right: 30%;
+  animation-delay: 3s;
+}
+
+.orb5 {
+  width: 200px;
+  height: 200px;
+  background: rgba(221, 160, 221, 0.5);
+  bottom: 30%;
+  left: 20%;
+  animation-delay: 7s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(50px, 50px) scale(1.1);
+  }
+  50% {
+    transform: translate(-30px, 80px) scale(0.9);
+  }
+  75% {
+    transform: translate(40px, -40px) scale(1.05);
+  }
+}
+
+.container {
+  margin: auto;
+  display: flex;
+  margin-top: 55px;
+  margin-bottom: 100px;
+  flex-direction: row;
+  width: 1200px;
+  height: 70px;
+  font-size: 14px;
+  gap: 20px;   
+  font-weight: 530;
+  text-align: center;    
+}
+
+@keyframes smoothFadeUp {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.container div {
+  width: 90%;
+  display: inline-block;
+  gap: 10px;
+  flex-direction: row;
+}
+
+a img {
+  width: 30px;
+  height: 30px;
+}
+
+.email {
+  margin-top: 10px;
+  display: flex;
+  align-self: center;
+}
+
 .social-media {
   display: flex;     
   gap: 20px;          
 }
 
+.social-media img {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 30px;
+  height: 30px;
+  margin-left: 15px;
+}
 
-        .social-media img {
-            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            width: 30px;
-            height: 30px;
-            margin-left: 15px;
-            
-            
-        }
-
-      
-
-
-        .phone{
-             width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            gap: 20px;
-        }
-         
+.phone {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  gap: 20px;
+}
 
 .social-media img:hover {
   cursor: pointer;
-    transform: scale(1.2) rotate(45deg) translateY(-3px);
+  transform: scale(1.2) rotate(45deg) translateY(-3px);
 }
-        

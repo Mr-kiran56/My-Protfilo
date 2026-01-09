@@ -1,6 +1,8 @@
-from pydantic import BaseModel, EmailStr,conint,Field
+
+
+from pydantic import BaseModel, EmailStr, conint, Field
 from datetime import datetime
-from typing import Optional,List
+from typing import Optional, List
 
 class ContactDetail(BaseModel):
     firstname: str
@@ -13,7 +15,7 @@ class ContactDetail(BaseModel):
 class ProjectsDetail(BaseModel):
     ProjectName: str
     ProjectContent: str
-    TechStack: str = Field(alias="TechStcak")
+    TechStcak: str
     GitHubLink: Optional[str] = None
     PreviewLink: Optional[str] = None
     ImageUrl: Optional[str] = None
@@ -26,15 +28,15 @@ class CommentUserOut(BaseModel):
     class Config:
         from_attributes = True
 
+
 class CommentOut(BaseModel):
     id: int
     comment: str
     project_id: int
-    comments_user: CommentUserOut   
+    comments_user: CommentUserOut
+    
     class Config:
         from_attributes = True
-
-
 
 
 class ProjectWithVotes(BaseModel):
@@ -49,17 +51,18 @@ class ProjectWithVotes(BaseModel):
     project_comments: List[CommentOut]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Comments(BaseModel):
-    project_id:int
-    comment:str
-    
+    project_id: int
+    comment: str
+
 
 class User(BaseModel):
     email: str
     username: str
+
 
 class ShowUser(BaseModel):
     user_id: int
@@ -67,7 +70,8 @@ class ShowUser(BaseModel):
     username: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
 
 class Token(BaseModel):
     access_token: str
@@ -77,10 +81,12 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     id: Optional[int] = None
 
+
 class ProjectUpvote(BaseModel):
-    project_id:int
-    dir:conint(le=1)
+    project_id: int
+    dir: conint(le=1)
+
 
 class ProjectUpvoteCheck(BaseModel):
-    project_id:int
-    user_id:int
+    project_id: int
+    user_id: int

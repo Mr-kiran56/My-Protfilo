@@ -1,4 +1,3 @@
-// Authentication helper functions for managing user tokens and IDs
 
 export const getToken = () => {
   try {
@@ -54,9 +53,39 @@ export const removeUserId = () => {
   }
 };
 
+
+export const getUsername = () => {
+  try {
+    return localStorage.getItem("username");
+  } catch (error) {
+    console.error("Error getting username:", error);
+    return null;
+  }
+};
+
+export const setUsername = (username) => {
+  try {
+    if (username) {
+      localStorage.setItem("username", username);
+    }
+  } catch (error) {
+    console.error("Error setting username:", error);
+  }
+};
+
+export const removeUsername = () => {
+  try {
+    localStorage.removeItem("username");
+  } catch (error) {
+    console.error("Error removing username:", error);
+  }
+};
+
+
 export const logout = () => {
   removeToken();
   removeUserId();
+  removeUsername();
   window.location.href = "/login";
 };
 
@@ -64,3 +93,6 @@ export const isAuthenticated = () => {
   const token = getToken();
   return token !== null && token !== undefined && token !== "";
 };
+
+
+

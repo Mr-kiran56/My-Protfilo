@@ -1,10 +1,10 @@
 import "./Login.css";
 import { useState } from "react";
 import api from "./Api";
-import { setToken, setUserId } from "./auth";
+import { setToken, setUserId, setUsername } from "./auth";
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [username, setUsernameState] = useState("");
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -18,9 +18,14 @@ function Login() {
         email,
       });
 
-  
+      // ✅ SAVE AUTH DATA
       setToken(res.data.access_token);
       setUserId(res.data.user_id);
+      setUsername(res.data.username || username); // fallback
+
+      // ✅ clear inputs
+      setUsernameState("");
+      setEmail("");
 
       window.location.href = "/";
     } catch (error) {
@@ -38,7 +43,8 @@ function Login() {
 
         <div className="note-banner">
           <p>
-            <strong>Note!</strong> This information will not be shared with anyone. This is only for identity purposes.
+            <strong>Note!</strong> This information will not be shared with anyone.
+            This is only for identity purposes.
           </p>
         </div>
 
@@ -48,7 +54,7 @@ function Login() {
               type="text"
               placeholder="Username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setUsernameState(e.target.value)}
               required
               disabled={isLoading}
             />

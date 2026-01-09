@@ -6,73 +6,67 @@ import SideCard from "./SideCard";
 import api from "./Api";
 import { getUserId } from "./auth";
 
+const getToken = () => localStorage.getItem("token");
+const getUsername = () => localStorage.getItem("username") || "Anonymous";
+
 export default function Projects() {
   const [projectDetails, setProjectDetails] = useState([]);
-  const [src_image, setSrcImage] = useState("/images/heart.png");
-  const upvoted_src = "/images/upstar.png";
+  const [upvotedProjects, setUpvotedProjects] = useState(new Set());
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [commentText, setCommentText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  
-  const [profileLikes, setprofileLikes] = useState({
-    total_project_upvotes: 0
-  });
 
-  const Upvotes = async () => {
+
+ useEffect(() => {
+  const fetchProjects = async () => {
     try {
-      const votes = await api.get("/profile_upvote/getall-upvotes");
-      setprofileLikes(votes.data);
+      const response = await api.get("/projects/getallprojects");
+      setProjectDetails(response.data);
     } catch (error) {
-      console.error("Error fetching upvotes:", error);
+      console.error("Error fetching projects:", error);
     }
   };
 
+  fetchProjects();
+}, []);
 
-  
 
-  useEffect(() => {
-    const fetchProjects = async () => {
+  const checkUserUpvotes = async (projects) => {
+    const userId = getUserId();
+    if (!userId) return;
+
+    const upvoted = new Set();
+    for (const project of projects) {
       try {
-        const response = await api.get("/projects/getallprojects");
-        setProjectDetails(response.data);
-        console.log("Projects:", response.data);
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      }
-    };
+        const res = await api.get("/project_upvote/is_project_upvote", {
+          params: {
+            project_id: project.project_id,
+            user_id: userId
+          }
+        });
 
-    fetchProjects();
-  }, []);
-
-
-
-    const isUpVote = async () => {
-    const token = getToken();
-    if (!token) return;
-
-    try {
-      const res = await api.get("/project_upvote/is_project_upvote", {
-        project_id:details.project_id,
-        user_id:getUserId(),
-        headers: {
-          Authorization: `Bearer ${token}`
+        if (res.data.is_upvoted === true) {
+        
+          upvoted.add(project.project_id);
         }
-      });
-
-      if (res.data.is_upvoted === true) {
-        setSrcImage(upvoted_src);
+      } catch (err) {
+        console.error("Error checking upvote status:", err);
       }
-    } catch (err) {
-      console.error("Error checking upvote status:", err);
     }
+    setUpvotedProjects(upvoted);
   };
 
   
+useEffect(() => {
+  if (getToken() && projectDetails.length > 0) {
+    checkUserUpvotes(projectDetails);
+  }
+}, [projectDetails]);
 
-  const PostUpvote = async () => {
-    if (src_image === upvoted_src) {
-      alert("You have already upvoted!");
-      return;
-    }
 
+
+  const handleUpvote = async (projectId) => {
     const token = getToken();
     if (!token) {
       alert("Please login to upvote!");
@@ -80,12 +74,18 @@ export default function Projects() {
       return;
     }
 
+    if (upvotedProjects.has(projectId)) {
+      alert("You have already upvoted this project!");
+      return;
+    }
+
     try {
-      console.log("Sending upvote request...");
-      
       const response = await api.post(
-        "/profile_upvote/",
-        {}, 
+        "/project_upvote/",
+        {
+          project_id: projectId,
+          dir: 1
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -93,42 +93,117 @@ export default function Projects() {
         }
       );
 
-      console.log("Upvote response:", response.data);
       
-      setSrcImage(upvoted_src);
-      await Upvotes();
+      setUpvotedProjects(prev => new Set([...prev, projectId]));
+      setProjectDetails(prev =>
+        prev.map(project =>
+          project.project_id === projectId
+            ? { ...project, project_votes: project.project_votes + 1 }
+            : project
+        )
+      );
+
       alert(response.data.message || "Thanks for upvoting!");
     } catch (error) {
-      console.error("Full error:", error);
-      console.error("Error response:", error.response?.data);
-      
+      console.error("Error upvoting:", error);
       if (error.response?.status === 401) {
         alert("Session expired. Please login again.");
         window.location.href = "/login";
-      } else if (error.response?.data?.detail) {
-        alert(error.response.data.detail);
+      } else if (error.response?.status === 409) {
+        alert("You have already upvoted this project!");
+        setUpvotedProjects(prev => new Set([...prev, projectId]));
       } else {
-        alert("Failed to upvote. Please try again.");
+        alert(error.response?.data?.detail || "Failed to upvote. Please try again.");
       }
     }
   };
 
- 
+  const handleCommentSubmit = async () => {
+    const token = getToken();
+    if (!token) {
+      alert("Please login to comment!");
+      window.location.href = "/login";
+      return;
+    }
 
-  useEffect(() => {
-    Upvotes();
-    isUpVote();
-  }, []);
+    if (!commentText.trim()) {
+      alert("Please enter a comment!");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await api.post(
+        "/comments/",
+        {
+          project_id: selectedProject.project_id,
+          comment: commentText
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+    
+      const newComment = {
+        id: Date.now(),
+        comment: commentText,
+        project_id: selectedProject.project_id,
+        comments_user: {
+          user_id: parseInt(getUserId()),
+          username: getUsername()
+        }
+      };
+
+      setProjectDetails(prev =>
+        prev.map(project =>
+          project.project_id === selectedProject.project_id
+            ? {
+                ...project,
+                project_comments: [...project.project_comments, newComment]
+              }
+            : project
+        )
+      );
+
+      setSelectedProject(prev => ({
+        ...prev,
+        project_comments: [...prev.project_comments, newComment]
+      }));
+
+      setCommentText("");
+      alert("Comment posted successfully!");
+    } catch (error) {
+      console.error("Error posting comment:", error);
+      if (error.response?.status === 401) {
+        alert("Session expired. Please login again.");
+        window.location.href = "/login";
+      } else {
+        alert(error.response?.data?.detail || "Failed to post comment. Please try again.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const openCommentsPanel = (project) => {
+    setSelectedProject(project);
+  };
+
+  const closeCommentsPanel = () => {
+    setSelectedProject(null);
+    setCommentText("");
+  };
 
 
 
-
-
-
-
-
-
-
+  // localStorage.removeItem("username");
+  
+  // localStorage.removeItem("user_id");
+  
+  // localStorage.removeItem("token");
 
   return (
     <>
@@ -143,50 +218,32 @@ export default function Projects() {
         )}
 
         {projectDetails.map((details) => (
-          <div
-            className="project-card"
-            key={details.project_id}
-          >
+          <div className="project-card" key={details.project_id}>
             <div className="project-content">
               <div className="project-image-container">
-<img
-  src={`https://images.unsplash.com/${details.ImageUrl}?auto=format&fit=crop&h=390&w=450&q=80`}
-  alt="Project preview"
-/>
-
-
+                <img
+                  src={`https://images.unsplash.com/${details.ImageUrl}?auto=format&fit=crop&h=390&w=450&q=80`}
+                  alt="Project preview"
+                />
                 <div className="project-image-overlay"></div>
               </div>
 
               <div className="project-info">
-                <div className="project-number">
-                  {details.project_id}
-                </div>
+                <div className="project-number">{details.project_id}</div>
 
-                <h2 className="project-title">
-                  {details.ProjectName}
-                </h2>
+                <h2 className="project-title">{details.ProjectName}</h2>
 
-                <p className="project-description">
-                  {details.ProjectContent}
-                </p>
+                <p className="project-description">{details.ProjectContent}</p>
 
                 <div className="project-tech">
-                  <div className="project-tech-label">
-                    Tech Stack
-                  </div>
+                  <div className="project-tech-label">Tech Stack</div>
 
                   <div className="tech-stack">
-                    {details.TechStcak
-                      ?.split(",")
-                      .map((tech, index) => (
-                        <span
-                          className="tech-tag"
-                          key={index}
-                        >
-                          {tech.trim()}
-                        </span>
-                      ))}
+                    {details.TechStcak?.split(",").map((tech, index) => (
+                      <span className="tech-tag" key={index}>
+                        {tech.trim()}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
@@ -196,11 +253,9 @@ export default function Projects() {
                     href={details.GitHubLink}
                     target="_blank"
                     rel="noreferrer"
+                    title="View GitHub Repository"
                   >
-                    <img
-                      src="/images/preview.png"
-                      alt="GitHub"
-                    />
+                    <img src="/images/preview.png" alt="GitHub" />
                   </a>
 
                   <a
@@ -208,43 +263,53 @@ export default function Projects() {
                     href={details.PreviewLink}
                     target="_blank"
                     rel="noreferrer"
+                    title="View Live Demo"
                   >
-                    <img
-                      src="/images/web-programming.png"
-                      alt="Preview"
-                    />
+                    <img src="/images/web-programming.png" alt="Preview" />
                   </a>
-                   <a
-                    className="action-btn"
-                    // href={}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <img
-                      src="/images/comments.png"
-                      alt="Preview"
-                    />
-                  
-                  </a>
-                  <h6 style={{marginTop:'43.9px',marginLeft:'128.2px',position:'absolute'}}>{(details.project_comments).length}</h6> 
 
-                  
-                  <a
+                  <button
                     className="action-btn"
-                    // href={}
-                    target="_blank"
-                    rel="noreferrer"
+                    onClick={() => openCommentsPanel(details)}
+                    title="View Comments"
+                    style={{ background: "none", border: "none", cursor: "pointer" }}
+                  >
+                    <img src="/images/comments.png" alt="Comments" />
+                  </button>
+                  <h6
+                    style={{
+                      marginTop: "43.9px",
+                      marginLeft: "128.2px",
+                      position: "absolute"
+                    }}
+                  >
+                    {details.project_comments.length}
+                  </h6>
+
+                  <button
+                    className="action-btn"
+                    onClick={() => handleUpvote(details.project_id)}
+                    title={upvotedProjects.has(details.project_id) ? "Already Liked" : "Like Project"}
+                    style={{ background: "none", border: "none", cursor: "pointer" }}
                   >
                     <img
-                      src="/images/heart.png"
-                      alt="Preview"
+                      src={
+                        upvotedProjects.has(details.project_id)
+                          ? "/images/upheart.png"
+                          : "/images/heart.png"
+                      }
+                      alt="Like"
                     />
-                  
-                  </a>
-                   <h6 style={{marginTop:'43.9px',marginLeft:'186.2px',position:'absolute'}}>{details.project_votes}</h6> 
-                  
-   
-
+                  </button>
+                  <h6
+                    style={{
+                      marginTop: "43.9px",
+                      marginLeft: "186.2px",
+                      position: "absolute"
+                    }}
+                  >
+                    {details.project_votes}
+                  </h6>
                 </div>
               </div>
             </div>
@@ -253,6 +318,240 @@ export default function Projects() {
       </div>
 
    
+{selectedProject && (
+  <>
+    <div className="body-cmt" style={{ position: "absolute" }}>
+     
+     
+     
+      <div
+        className="comments-overlay"
+        onClick={closeCommentsPanel}
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundColor: "rgba(0,0,0,0.7)",
+          zIndex: 999
+        }}
+      />
+
+    
+    
+
+      <div
+        className="comments-sidebar"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "450px",
+          maxWidth: "90vw",
+          height: "600px",
+          marginTop: "56px",
+          borderRadius: "15px",
+          background:
+            "linear-gradient(135deg, rgba(144,238,144,0.35), rgba(173,216,230,0.35), rgba(255,182,193,0.35), rgba(221,160,221,0.35), rgba(255,255,153,0.35))",
+          backdropFilter: "blur(12px)",
+          boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
+          zIndex: 1000,
+          display: "flex",
+          flexDirection: "column",
+          animation: "slideIn 0.3s ease-out"
+        }}
+      >
+     
+
+
+
+
+
+
+        <div
+          style={{
+            padding: "18px",
+            borderBottom: "1px solid rgba(255,255,255,0.3)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
+          <h3 style={{ margin: 0, fontSize: "20px", fontWeight: 700 }}>
+            Comments ({selectedProject.project_comments.length})
+          </h3>
+          <button
+            onClick={closeCommentsPanel}
+            style={{
+              background: "none",
+              border: "none",
+              fontSize: "24px",
+              cursor: "pointer"
+            }}
+          >
+            ✕
+          </button>
+        </div>
+
+
+        <div
+          className="hide-scroll"
+          style={{
+            flex: 1,
+            overflowY: "auto",
+            padding: "20px"
+          }}
+        >
+          {selectedProject.project_comments.length === 0 ? (
+            <p style={{ textAlign: "center", opacity: 0.7 }}>
+              No comments yet. Be the first to comment!
+            </p>
+          ) : (
+            selectedProject.project_comments.map((comment) => (
+              <div
+                key={comment.id}
+                style={{
+                  background: "rgba(255,255,255,0.65)",
+                  borderRadius: "12px",
+                  padding: "14px",
+                  marginBottom: "14px",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.15)"
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    marginBottom: "6px"
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "34px",
+                      height: "34px",
+                      borderRadius: "50%",
+                      background:
+                        "linear-gradient(135deg,#4a9eff,#9b6cff)",
+                      color: "white",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: 700
+                    }}
+                  >
+                    {comment.comments_user.username
+                      .charAt(0)
+                      .toUpperCase()}
+                  </div>
+                  <span style={{ fontWeight: 600 }}>
+                    {comment.comments_user.username}
+                  </span>
+                </div>
+
+                <p style={{ margin: 0, lineHeight: "1.5" }}>
+                  {comment.comment}
+                </p>
+              </div>
+            ))
+          )}
+        </div>
+
+ 
+ 
+
+
+
+
+
+        <div
+          style={{
+            padding: "14px",
+            borderTop: "1px solid rgba(255,255,255,0.4)"
+          }}
+        >
+          {getToken() ? (
+            <>
+              <textarea
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                placeholder="Write a comment..."
+                rows={3}
+                style={{
+                  width: "100%",
+                  borderRadius: "10px",
+                  padding: "12px",
+                  border: "none",
+                  outline: "none",
+                  marginBottom: "10px",
+                  resize: "none"
+                }}
+              />
+              <button
+                onClick={handleCommentSubmit}
+                disabled={isSubmitting || !commentText.trim()}
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  borderRadius: "10px",
+                  border: "none",
+                  fontWeight: 700,
+                  background:
+                    "linear-gradient(135deg,#4a9eff,#9b6cff)",
+                  color: "white",
+                  cursor: "pointer"
+                }}
+              >
+                {isSubmitting ? "Posting..." : "Post Comment"}
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => (window.location.href = "/login")}
+              style={{
+                width: "100%",
+                padding: "12px",
+                borderRadius: "10px",
+                border: "none",
+                fontWeight: 700,
+                background:
+                  "linear-gradient(135deg,#4a9eff,#9b6cff)",
+                color: "white"
+              }}
+            >
+              Login to comment
+            </button>
+          )}
+        </div>
+      </div>
+
+
+
+      <style>{`
+        @keyframes slideIn {
+          from {
+            transform: translateX(-100%);
+          }
+          to {
+            transform: translateX(0);
+          }
+        }
+
+        .hide-scroll {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE / Edge */
+}
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;              /* Chrome / Safari */
+}
+
+      `
+      
+      }</style>
+    </div>
+  </>
+)}
+
+
 
       <hr className="br-line" style={{ margin: "auto" }} />
       <Footer />
