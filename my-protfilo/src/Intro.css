@@ -382,5 +382,29 @@
             background-color: black;
             width: 92%;
         }
-
+  /* style={{
+              position: "absolute",
+              width: "300px",
+              marginTop: "6px",
+              marginLeft: "370px"
+            }} */
         
+  .like-cmt{
+    background-color: #111;
+    color: white;
+    opacity: 0.85;
+    padding: 10px 10px 10px 25px;
+    border-radius: 4px 30px 30px 40px;
+    position: absolute;
+    width: 280px;
+    margin-top: 6px;
+    margin-left: 370px;
+    display: none;
+}
+
+
+.upvote-wrapper:hover + .like-cmt{
+    display: block;
+}
+
+

@@ -8,8 +8,8 @@ import SideCard from "./SideCard";
 import { getToken, getUserId } from "./auth";
 
 function Intro({ ShowAlert }) {
-  const [src_image, setSrcImage] = useState("/images/star.png");
-  const upvoted_src = "/images/upstar.png";
+  const [src_image, setSrcImage] = useState("/images/nolike.png");
+  const upvoted_src = "/images/yeslike.png";
 
   
   const [profileLikes, setprofileLikes] = useState({
@@ -190,7 +190,7 @@ function Intro({ ShowAlert }) {
             <img src="/images/leetcode.png" alt="leetcode" />
           </a>
 
-          <button
+          <button className="upvote-wrapper"
             onClick={PostUpvote}
             style={{
               background: "none",
@@ -210,13 +210,8 @@ function Intro({ ShowAlert }) {
           </button>
 
           <h6
-            style={{
-              position: "absolute",
-              width: "300px",
-              marginTop: "6px",
-              marginLeft: "370px"
-            }}
-          >
+          
+          className="like-cmt" >
             {profileLikes.total_profile_upvotes}
             <span style={{ marginLeft: "14px" }}>
               Persons Liked This Profile
