@@ -27,3 +27,5 @@ app.include_router(project_upvote.router)
 @app.get("/")
 def load():
     return {"message": "hii there how are you !!!"}
+
+
