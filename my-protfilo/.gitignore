@@ -12,8 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Ignore Profile Intent LLM artifacts
+my-protfilo/backend/IntentLLM/profileIntentLLM/
 
-my-protfilo/backend/IntentLLM/profileIntentLLM/*
 
 # Editor directories and files
 .vscode/*
