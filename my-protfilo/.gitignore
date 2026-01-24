@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+
+my-protfilo/backend/IntentLLM/profileIntentLLM/*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
