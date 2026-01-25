@@ -2,7 +2,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            max-width: 1080px;
+            max-width: 1000px;
             width: 100%;
             margin: 0 auto;
             padding: 20px;
@@ -22,59 +22,83 @@
 
         
 
-        .message {
-            display: flex;
-            gap: 15px;
-            max-width: 80%;
-            animation: fadeIn 0.3s ease-in;
-        }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.message {
+  display: flex;
+  gap: 12px;
+  max-width: 300px;         
+  animation: fadeIn 0.3s ease-in;
+}
 
-        .message.user {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
+.message.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
 
-        .message.bot {
-            align-self: flex-start;
-        }
+.message.bot {
+  align-self: flex-start;
+}
 
-        .message-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            /* background-color: rgb(64, 227, 230); */
-            background-color: whitesmoke;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
 
-        .message.user .message-avatar {
-            background-color: #333;
-            color: white;
-        }
+.message-avatar {
+  width: 35px;
+  height: 35px;
+  min-width: 35px;
+  border-radius: 50%;
+  background-color: whitesmoke;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
 
-        .message-content {
-            background-color: white;
-            padding: 15px 20px;
-            border-radius: 20px;
-            font-size: 15px;
-            line-height: 1.5;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
+.message.user .message-avatar {
+  background-color: #333;
+  color: white;
+}
 
-        .message.user .message-content {
-            background-color: black;
-            color: whitesmoke;
-            opacity: 0.86;
-        }
+.message-content {
+  max-width: 430px;         
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 15px;
+  line-height: 1.49;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+
+p {
+  margin: 1em 0;  /* THIS creates extra height */
+}
+
+.message-content p {
+  margin: 0;
+}
+
+
+.message.user .message-content {
+  background-color: black;
+  color: whitesmoke;
+  opacity: 0.9;
+}
+
+
+
+
+
+@media (max-width: 400px) {
+  .input-container,
+  .message,
+  .message-content {
+    max-width: 90%;
+  }
+}
 
        .input-container {
   position: fixed;
@@ -85,7 +109,7 @@
   display: flex;
 
   gap: 15px;
-  width: 800px;
+  width: 740px;
   padding: 10px;
   background-color: white;
   border-radius: 30px;
@@ -101,6 +125,7 @@
             font-size: 17px;
             font-family: "Montserrat", sans-serif;
             padding: 10px 20px;
+             border-radius: 30px;
             background-color: transparent;
         }
 

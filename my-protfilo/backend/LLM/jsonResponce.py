@@ -3,14 +3,14 @@ def  responceJson(intent:str,rdi:int):
     RESPONSES = {
 
     "greeting": [
-        "Hello! 👋 How can I help you today?",
+        "Hello!  How can I help you today?",
         "Hi there! Feel free to explore my portfolio.",
         "Hey! What would you like to know?",
         "Hello! I'm here to assist you.",
         "Hi! Ask me anything about my work or skills.",
         "Hey there! How can I support you today?",
         "Welcome! Let me know what you're looking for.",
-        "Hi! Happy to help 😊",
+        "Hi! Happy to help ",
         "Hello! What brings you here today?",
         "Hey! Let’s get started."
     ],
@@ -18,10 +18,10 @@ def  responceJson(intent:str,rdi:int):
     "casual_chat": [
         "I'm doing great, thanks for asking!",
         "All good here. How about you?",
-        "I'm here and ready to help 😊",
+        "I'm here and ready to help ",
         "Doing well! What’s up?",
         "Everything’s going smoothly.",
-        "Feeling productive today 🚀",
+        "Feeling productive today ",
         "All set and available!",
         "Going great so far!",
         "Pretty good! How can I help?",
@@ -29,7 +29,7 @@ def  responceJson(intent:str,rdi:int):
     ],
 
     "farewell": [
-        "Goodbye! Thanks for visiting 👋",
+        "Goodbye! Thanks for visiting ",
         "See you later!",
         "Bye! Feel free to return anytime.",
         "Take care and have a great day!",
@@ -133,7 +133,7 @@ def  responceJson(intent:str,rdi:int):
     ],
 
     "thanks": [
-        "You're welcome! 😊",
+        "You're welcome! ",
         "Happy to help!",
         "Glad I could assist.",
         "Anytime!",
@@ -159,6 +159,4 @@ def  responceJson(intent:str,rdi:int):
     ]
     }
 
-    print(RESPONSES[intent][rdi])
-
-responceJson("help",10)
+    return RESPONSES[intent][rdi]
