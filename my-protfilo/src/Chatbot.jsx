@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import api from './Api';
+import api from './Api'; // Import strictly for Auth if needed
 import './Chatbot.css';
 
 function Chatbot() {
@@ -8,15 +8,39 @@ function Chatbot() {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  
+  // --- NEW STATE FOR WELCOME ANIMATION ---
+  const [welcomeText, setWelcomeText] = useState("How can I help you today?");
+  const welcomeMessages = [
+    "How can I help you today?",
+    "Ask about Kiran's Projects...",
+    "Ask about Kiran's Skills...",
+    "I am Spirit AI, ready to assist!"
+  ];
+
   const messagesEndRef = useRef(null);
   const recognitionRef = useRef(null);
+  const abortControllerRef = useRef(null); 
 
-  // Auto-scroll to bottom when new messages arrive
+  // --- WELCOME TEXT ANIMATION (Only runs when chat is empty) ---
+  useEffect(() => {
+    if (messages.length > 0) return; // Stop animation if chat started
+
+    let index = 0;
+    const intervalId = setInterval(() => {
+      index = (index + 1) % welcomeMessages.length;
+      setWelcomeText(welcomeMessages[index]);
+    }, 3000); // Change text every 3 seconds
+
+    return () => clearInterval(intervalId);
+  }, [messages.length]);
+
+  // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, isTyping]);
 
-  // Initialize speech recognition
+  // Speech Recognition Setup
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
@@ -33,29 +57,16 @@ function Chatbot() {
         setInputValue(transcript);
       };
 
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
-
-      recognitionRef.current.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
+      recognitionRef.current.onend = () => setIsListening(false);
+      recognitionRef.current.onerror = (e) => {
+        console.error('Speech error:', e.error);
         setIsListening(false);
       };
     }
-
-    return () => {
-      if (recognitionRef.current && isListening) {
-        recognitionRef.current.stop();
-      }
-    };
-  }, [isListening]);
+  }, []);
 
   const toggleListening = () => {
-    if (!recognitionRef.current) {
-      alert('Speech Recognition not supported in this browser');
-      return;
-    }
-
+    if (!recognitionRef.current) return alert('Speech Not Supported');
     if (isListening) {
       recognitionRef.current.stop();
       setIsListening(false);
@@ -66,66 +77,94 @@ function Chatbot() {
     }
   };
 
-  const handleSend = async () => {
-    const message = inputValue.trim();
-    if (!message) return;
+  // --- MODIFIED SEND HANDLER TO ACCEPT OPTIONAL TEXT ---
+const handleSend = async (manualText = null) => {
+    const textToSend = manualText || inputValue.trim();
+    if (!textToSend) return;
 
-    // Add user message
-    const userMessage = { type: 'user', content: message };
-    setMessages(prev => [...prev, userMessage]);
+    // 1. Add User Message
+    const userMessage = { type: 'user', content: textToSend };
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
-    setIsTyping(true);
+    setIsTyping(true); // Show typing dots initially
+
+    if (abortControllerRef.current) abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
 
     try {
-      // Get username from localStorage or use default
-      const username = localStorage.getItem('username') || 'guest';
+      const username = localStorage.getItem('username') || 'Guest';
+      const url = 'http://127.0.0.1:8000/protfiloChatbot/profilechatbotResponce';
 
-      console.log('📤 Sending request:', { userName: username, question: message });
-
-      // Call API endpoint
-      const response = await api.post('/protfiloChatbot/profilechatbotResponce', {
-        userName: username,
-        question: message,
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, question: textToSend }),
+        signal: abortControllerRef.current.signal,
       });
 
-      console.log('📥 Received response:', response.data);
+      if (!response.body) throw new Error("ReadableStream not supported.");
 
-      // Extract bot response safely
-      let botContent = '';
-      
-      if (!response.data) {
-        botContent = 'Sorry, I received an empty response.';
-      } else if (typeof response.data === 'string') {
-        botContent = response.data;
-      } else if (response.data.response) {
-        botContent = response.data.response;
-      } else if (response.data.messages && response.data.messages.length > 0) {
-        const lastMessage = response.data.messages[response.data.messages.length - 1];
-        botContent = typeof lastMessage === 'string' ? lastMessage : lastMessage.content || JSON.stringify(lastMessage);
-      } else {
-        botContent = 'I received your message but had trouble formatting the response.';
+      const contentType = response.headers.get("content-type");
+
+      // CASE A: JSON (Predefined Answer - Instant)
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        setIsTyping(false);
+        setMessages((prev) => [...prev, { type: 'bot', content: data.response }]);
+      } 
+      // CASE B: Streaming (Real-Time AI)
+      else {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let accumulatedText = "";
+        let isFirstChunk = true;
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          // Decode the chunk (stream: true handles incomplete bytes like emojis)
+          const chunk = decoder.decode(value, { stream: true });
+          
+          if (chunk) {
+             accumulatedText += chunk;
+
+             if (isFirstChunk) {
+               // 1. Hide Typing Dots
+               setIsTyping(false);
+               
+               // 2. Create the Bot Message bubble with the first text
+               setMessages((prev) => [...prev, { type: 'bot', content: accumulatedText }]);
+               isFirstChunk = false;
+             } else {
+               // 3. Update the EXISTING message bubble (Real-time effect)
+               setMessages((prev) => {
+                 const newArr = [...prev];
+                 const lastIndex = newArr.length - 1;
+                 if (newArr[lastIndex].type === 'bot') {
+                   // Append only to the last bot message
+                   newArr[lastIndex] = { ...newArr[lastIndex], content: accumulatedText };
+                 }
+                 return newArr;
+               });
+             }
+          }
+        }
+        
+        // Final check if nothing came back
+        if (isFirstChunk && !accumulatedText) {
+           setIsTyping(false);
+           setMessages((prev) => [...prev, { type: 'bot', content: "No response generated." }]);
+        }
       }
-      
-      console.log('✅ Bot content:', botContent);
-
-      // Add bot response
-      const botMessage = { 
-        type: 'bot', 
-        content: botContent
-      };
-      setMessages(prev => [...prev, botMessage]);
-      
     } catch (error) {
-      console.error('❌ Error:', error);
-      console.error('Error details:', error.response?.data || error.message);
-      
-      const errorMessage = { 
-        type: 'bot', 
-        content: `Sorry, I encountered an error: ${error.response?.data?.detail || error.message || 'Please try again.'}` 
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      if (error.name === 'AbortError') return;
+      console.error('Error:', error);
+      setIsTyping(false);
+      setMessages((prev) => [...prev, { type: 'bot', content: "Something went wrong." }]);
     } finally {
       setIsTyping(false);
+      abortControllerRef.current = null;
     }
   };
 
@@ -136,27 +175,47 @@ function Chatbot() {
     }
   };
 
+  // --- RECOMMENDATION CHIPS ---
+  const suggestions = [
+    "Tell me about your projects",
+    "What are your technical skills?",
+    "How can I contact you?",
+  ];
+
   return (
     <div className="chat-container">
       <div className="chat-messages" id="chatMessages">
-        {/* Welcome message */}
-        <div className="welcome-message">
-          <h2>Welcome to Spirit AI Assistant</h2>
-          <p>How can I help you today?</p>
-        </div>
+        
+        {/* --- WELCOME SCREEN (Only visible when no messages) --- */}
+        {messages.length === 0 && (
+          <div className="welcome-container">
+      
+            <h2 className="welcome-title">Hello, I'm Spirit AI</h2>
+            <p className="welcome-subtitle">{welcomeText}</p>
+            
+            <div className="suggestions-grid">
+              {suggestions.map((text, index) => (
+                <button 
+                  key={index} 
+                  className="suggestion-chip"
+                  onClick={() => handleSend(text)} // Send immediately on click
+                >
+                  {text}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
-        {/* Message list */}
+        {/* --- CHAT MESSAGES --- */}
         {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`message ${msg.type}`}
-          >
+          <div key={index} className={`message ${msg.type}`}>
             <div className="message-avatar">
               {msg.type === 'user' ? 'U' : 'AI'}
             </div>
             <div className="message-content">
               {msg.type === 'bot' ? (
-                <ReactMarkdown>{msg.content}</ReactMarkdown>
+                <ReactMarkdown>{msg.content || ''}</ReactMarkdown>
               ) : (
                 <p>{msg.content}</p>
               )}
@@ -164,11 +223,11 @@ function Chatbot() {
           </div>
         ))}
 
-        {/* Typing indicator */}
+        {/* Typing Indicator */}
         {isTyping && (
           <div className="message bot">
             <div className="message-avatar">AI</div>
-            <div className="message-content">
+            <div className="message-content" style={{ minWidth: '50px' }}>
               <div className="typing-indicator">
                 <div className="typing-dot"></div>
                 <div className="typing-dot"></div>
@@ -178,53 +237,40 @@ function Chatbot() {
           </div>
         )}
 
-        {/* Scroll anchor */}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input container */}
+      {/* --- INPUT AREA --- */}
       <div className="input-container">
         <input
-          type="text"
           className="chat-input"
-          id="chatInput"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Type your message here..."
+          placeholder="Message Spirit AI..."
           autoComplete="off"
           disabled={isListening}
         />
+        
         <button
-          className="mic-button"
+          className={`icon-button mic-button ${isListening ? 'active' : ''}`}
           onClick={toggleListening}
-          style={{
-            backgroundColor: isListening ? '#ff4444' : '#666',
-            color: 'white',
-            marginTop: '3px',
-            height: '40px',
-            width: '40px',
-            borderRadius: '20px',
-            fontSize: '18px',
-            border: 'none',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          title={isListening ? 'Stop listening' : 'Start voice input'}
-          aria-label={isListening ? 'Stop listening' : 'Start voice input'}
+          title={isListening ? 'Stop' : 'Speak'}
         >
-          🎤
+          {isListening ? (
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 6h12v12H6z" /></svg>
+          ) : (
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+          )}
         </button>
+
         <button
-          className="send-button"
-          id="sendButton"
-          onClick={handleSend}
+          className="icon-button send-button"
+          onClick={() => handleSend()}
           disabled={!inputValue.trim() || isListening}
+          title="Send"
         >
-          Send
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
         </button>
       </div>
     </div>

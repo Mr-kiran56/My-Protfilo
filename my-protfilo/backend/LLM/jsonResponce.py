@@ -94,14 +94,14 @@ def  responceJson(intent:str,rdi:int):
     ],
 
     "contact": [
-        "You can contact me via email at {{EMAIL}}.",
-        "Feel free to connect with me on LinkedIn: {{LINKEDIN_URL}}",
-        "For professional inquiries, reach out at {{EMAIL}}.",
-        "You can find my LinkedIn profile here: {{LINKEDIN_URL}}",
+        "You can contact me via email at {{https://www.linkedin.com/in/kiran-punna-b50774330}}.",
+        "Feel free to connect with me on LinkedIn: {{https://www.linkedin.com/in/kiran-punna-b50774330}}",
+        "For professional inquiries, reach out at {{https://www.linkedin.com/in/kiran-punna-b50774330}}.",
+        "You can find my LinkedIn profile here: {{https://www.linkedin.com/in/kiran-punna-b50774330}}",
         "The best way to contact me is email or LinkedIn.",
         "Reach out anytime via {{EMAIL}} or LinkedIn.",
         "I’m open to professional connections on LinkedIn.",
-        "For collaborations, email me at {{EMAIL}}.",
+        "For collaborations, email me at {{https://www.linkedin.com/in/kiran-punna-b50774330}}.",
         "All contact details are available on LinkedIn.",
         "Feel free to get in touch anytime!"
     ],

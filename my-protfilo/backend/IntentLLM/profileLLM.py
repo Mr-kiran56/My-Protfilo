@@ -81,6 +81,8 @@ def load_intent_model():
     logger.info(f"[IntentLLM] Encoder labels  : {label_encoder.classes_}")
 
 
+
+
 def predict_intent(sentence: str):
     """
     Predict intent for a single sentence.
@@ -90,8 +92,6 @@ def predict_intent(sentence: str):
         if not sentence or len(sentence.strip()) < 3:
             return  {"intent" : "unknown","conf": 0.0}
 
-        # Load model only when needed
-        load_intent_model()
 
         inputs = tokenizer(
             sentence,
