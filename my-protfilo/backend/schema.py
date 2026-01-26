@@ -10,7 +10,6 @@ class ContactDetail(BaseModel):
     email: EmailStr
     subject: str
     message: str
-    datetime: datetime
 
 class ProjectsDetail(BaseModel):
     ProjectName: str

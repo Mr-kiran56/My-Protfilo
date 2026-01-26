@@ -30,7 +30,7 @@ async def aiResponce(request: ChatRequest):
         print(f" Intent: {intent}, Confidence: {conf}")
 
         # 2. IF HIGH CONFIDENCE -> RETURN JSON
-        if conf > 0.90:
+        if conf > 0.95:
             randnum = random.randint(0, 9)
             response_text = responceJson(intent, randnum)
             print(f" Using predefined response: {response_text}")

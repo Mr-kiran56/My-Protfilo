@@ -5,6 +5,7 @@ import "./App.css";
 import SideCard from "./SideCard";
 import api from "./Api";
 import { getUserId, getToken, getUsername } from "./auth";
+import toast from "react-hot-toast";
 
 export default function Projects() {
   const [projectDetails, setProjectDetails] = useState([]);
@@ -80,6 +81,7 @@ export default function Projects() {
 
     if (upvotedProjects.has(projectId)) {
       alert("You have already upvoted this project!");
+
       return;
     }
 
@@ -106,7 +108,8 @@ export default function Projects() {
         )
       );
 
-      alert(response.data.message || "Thanks for upvoting!");
+      
+      toast.success(response.data.message || "Thanks for upvoting!");
     } catch (error) {
       console.error("Error upvoting:", error);
       if (error.response?.status === 401) {
@@ -176,14 +179,17 @@ export default function Projects() {
       }));
 
       setCommentText("");
-      alert("Comment posted successfully!");
+      
+      toast.success("Comment posted successfully!");
     } catch (error) {
       console.error("Error posting comment:", error);
       if (error.response?.status === 401) {
         alert("Session expired. Please login again.");
+
         window.location.href = "/login";
       } else {
-        alert(error.response?.data?.detail || "Failed to post comment. Please try again.");
+        
+        toast.error(error.response?.data?.detail || "Failed to post comment. Please try again.");
       }
     } finally {
       setIsSubmitting(false);

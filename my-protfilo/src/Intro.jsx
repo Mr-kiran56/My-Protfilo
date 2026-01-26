@@ -6,6 +6,7 @@ import api from "./Api";
 import Footer from "./Footer";
 import SideCard from "./SideCard";
 import { getToken, getUserId } from "./auth";
+import toast from "react-hot-toast";
 
 function Intro({ ShowAlert }) {
   const [src_image, setSrcImage] = useState("/images/nolike.png");
@@ -93,6 +94,7 @@ function Intro({ ShowAlert }) {
   const PostUpvote = async () => {
     if (src_image === upvoted_src) {
       alert("You have already upvoted!");
+      
       return;
     }
 
@@ -120,7 +122,9 @@ function Intro({ ShowAlert }) {
       
       setSrcImage(upvoted_src);
       await Upvotes();
-      alert(response.data.message || "Thanks for upvoting!");
+      toast.success(response.data.message || "Thanks for upvoting!")
+      
+      
     } catch (error) {
       console.error("Full error:", error);
       console.error("Error response:", error.response?.data);
@@ -131,7 +135,8 @@ function Intro({ ShowAlert }) {
       } else if (error.response?.data?.detail) {
         alert(error.response.data.detail);
       } else {
-        alert("Failed to upvote. Please try again.");
+        toast.error("Failed to upvote. Please try again.")
+
       }
     }
   };

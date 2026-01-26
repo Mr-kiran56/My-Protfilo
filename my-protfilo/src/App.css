@@ -218,6 +218,25 @@ a img {
   height: 30px;
 }
 
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+body::before,
+.particles,
+.color-orb {
+  pointer-events: none;
+}
+
+/* 🔥 Toast must be above everything */
+.react-hot-toast {
+
+  z-index: 999999 !important;
+}
+
+
+
 .email {
   margin-top: 10px;
   display: flex;

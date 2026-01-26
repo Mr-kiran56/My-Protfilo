@@ -7,9 +7,9 @@ import Chatbot from "./Chatbot";
 import Resume from "./Resume";
 import Project  from "./Project";
 import { useState,useEffect } from "react";
-import Alert from "./Alert";
-import Login from "./Login";
 
+import Login from "./Login";
+import {toast, Toaster } from "react-hot-toast";
 function App() {
 
 
@@ -51,7 +51,7 @@ setTimeout(() => {
   <>
   <Background/>
   <Navbar />
-  <Alert alert={alert}/>
+  <Toaster position="top-center" reverseOrder={false} />
   <Routes>
 
     <Route path="/" element={<Intro ShowAlert={ShowAlert} />} />

@@ -2,6 +2,7 @@ import "./Login.css";
 import { useState } from "react";
 import api from "./Api";
 import { setToken, setUserId, setUsername } from "./auth";
+import toast from "react-hot-toast";
 
 function Login() {
   const [username, setUsernameState] = useState("");
@@ -19,20 +20,9 @@ function Login() {
         email,
       });
 
-      // console.log("=== LOGIN RESPONSE ===");
-      // console.log("Full response:", res.data);
-      // console.log("user_id:", res.data.user_id);
-      // console.log("user_id type:", typeof res.data.user_id);
-      // console.log("username:", res.data.username);
-      // console.log("token:", res.data.access_token);
-
       const userId = String(res.data.user_id);
       const token = res.data.access_token;
       const userName = res.data.username || username;
-
-      // console.log("Saving to localStorage...");
-      // console.log("Saving user_id:", userId);
-      // console.log("Saving username:", userName);
 
       setToken(token);
       setUserId(userId);
@@ -56,6 +46,9 @@ function Login() {
       // Clear inputs
       setUsernameState("");
       setEmail("");
+      
+    toast.success(" Login successful! Redirecting...");
+      
 
       console.log(" Login successful! Redirecting...");
 
@@ -66,7 +59,9 @@ function Login() {
     } catch (error) {
       console.error(" Login failed:", error);
       console.error("Error details:", error.response?.data);
-      alert("Login failed. Please check your credentials and try again.");
+ 
+      
+    toast.error("Login failed. Please check your credentials and try again.");
     } finally {
       setIsLoading(false);
     }
