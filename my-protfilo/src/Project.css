@@ -270,3 +270,14 @@ body {
     height: 240px;
   }
 }
+
+
+
+.delete-comment{
+  height: 20px;
+  width: 20px;
+  float: right;
+  position: relative;
+  display: flex;
+
+}

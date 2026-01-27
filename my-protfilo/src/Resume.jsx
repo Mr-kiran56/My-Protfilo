@@ -2,9 +2,20 @@ import "./Resume.css"
 import "./App.css"
 import Footer from "./Footer";
 import SideCard from "./SideCard";
+import toast from "react-hot-toast";
+
 
 function Resume(){
+const baseURL = "http://127.0.0.1:8000";
+
+function downloadWord() {
+  window.location.href = `${baseURL}/download-word`;
+  toast.success("Thanks! For Downloading my Resume")
+}
+
+
     return(
+        
         <>
        
 
@@ -12,7 +23,7 @@ function Resume(){
         <SideCard/>
 
         <div className="btn-div">
-        <button className="btn-resume">Download Resume</button>
+        <button className="btn-resume" onClick={downloadWord}>Download Resume</button>
     </div>
     <h1 className="resume-title">Resume</h1>
         <div className="section">

@@ -58,6 +58,8 @@ def get_project_comments(project_id: int, db: Session = Depends(get_db)):
     return comments
 
 
+
+
 @router.delete('/{comment_id}')
 def delete_comment(
     comment_id: int,

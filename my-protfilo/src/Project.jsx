@@ -139,7 +139,7 @@ export default function Projects() {
 
     setIsSubmitting(true);
     try {
-      await api.post(
+      const response = await api.post(
         "/comments/",
         {
           project_id: selectedProject.project_id,
@@ -152,8 +152,9 @@ export default function Projects() {
         }
       );
 
+      // Use the comment_id returned from the backend
       const newComment = {
-        id: Date.now(),
+        id: response.data.comment_id,
         comment: commentText,
         project_id: selectedProject.project_id,
         comments_user: {
@@ -196,6 +197,60 @@ export default function Projects() {
     }
   };
 
+  const handleDeleteComment = async (commentId) => {
+    const token = getToken();
+    if (!token) {
+      alert("Please login to delete comments!");
+      return;
+    }
+
+    if (!window.confirm("Are you sure you want to delete this comment?")) {
+      return;
+    }
+
+    try {
+      await api.delete(`/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      // Update the project details state
+      setProjectDetails(prev =>
+        prev.map(project =>
+          project.project_id === selectedProject.project_id
+            ? {
+                ...project,
+                project_comments: project.project_comments.filter(
+                  comment => comment.id !== commentId
+                )
+              }
+            : project
+        )
+      );
+
+      // Update the selected project state
+      setSelectedProject(prev => ({
+        ...prev,
+        project_comments: prev.project_comments.filter(
+          comment => comment.id !== commentId
+        )
+      }));
+
+      toast.success("Comment deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      if (error.response?.status === 401) {
+        alert("Session expired. Please login again.");
+        window.location.href = "/login";
+      } else if (error.response?.status === 403) {
+        toast.error("You can only delete your own comments!");
+      } else {
+        toast.error(error.response?.data?.detail || "Failed to delete comment.");
+      }
+    }
+  };
+
   const openCommentsPanel = (project) => {
     setSelectedProject(project);
   };
@@ -203,6 +258,13 @@ export default function Projects() {
   const closeCommentsPanel = () => {
     setSelectedProject(null);
     setCommentText("");
+  };
+
+  // Check if the current user owns a comment
+  const isCommentOwner = (commentUserId) => {
+    const currentUserId = getUserId();
+    if (!currentUserId) return false;
+    return parseInt(currentUserId, 10) === commentUserId;
   };
 
   return (
@@ -398,7 +460,8 @@ export default function Projects() {
                         borderRadius: "12px",
                         padding: "14px",
                         marginBottom: "14px",
-                        boxShadow: "0 6px 20px rgba(0,0,0,0.15)"
+                        boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
+                        position: "relative"
                       }}
                     >
                       <div
@@ -432,9 +495,40 @@ export default function Projects() {
                         </span>
                       </div>
 
-                      <p style={{ margin: 0, lineHeight: "1.5" }}>
+                      <p style={{ margin: 0, lineHeight: "1.5", paddingRight: "30px" }}>
                         {comment.comment}
                       </p>
+
+                      {/* Show delete button only if user is logged in and owns the comment */}
+                      {getToken() && isCommentOwner(comment.comments_user.user_id) && (
+                        <button
+                          onClick={() => handleDeleteComment(comment.id)}
+                          style={{
+                            position: "absolute",
+                            top: "14px",
+                            right: "14px",
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            padding: "4px"
+                          }}
+                          title="Delete comment"
+                        >
+                          <img 
+                            className="delete-comment" 
+                            src="/images/trash.png" 
+                            alt="Delete"
+                            style={{
+                              width: "20px",
+                              height: "20px",
+                              opacity: 0.6,
+                              transition: "opacity 0.2s"
+                            }}
+                            onMouseEnter={(e) => e.target.style.opacity = "1"}
+                            onMouseLeave={(e) => e.target.style.opacity = "0.6"}
+                          />
+                        </button>
+                      )}
                     </div>
                   ))
                 )}

@@ -8,7 +8,11 @@ from backend.LLM import profileChatbot
 from contextlib import asynccontextmanager
 from backend.IntentLLM.profileLLM import load_intent_model, predict_intent
 import os
+from fastapi.responses import FileResponse
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+FILE_PATH ="B:/Protfilo/my-protfilo/src/assets/Kiran_Punna_AIML_Resume.pdf"
 # --- LIFESPAN MANAGER (WINDOWS SAFE VERSION) ---
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -61,3 +65,13 @@ app.include_router(profileChatbot.router)
 @app.get("/")
 def load():
     return {"message": "hii there how are you !!!"}
+
+
+@app.get("/download-word")
+async def download_word():
+    return FileResponse(
+        path=FILE_PATH,
+        media_type="application/pdf",
+        filename="Kiran_Punna_AIML_Resume.pdf"
+    )
+

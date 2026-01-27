@@ -94,16 +94,18 @@ def  responceJson(intent:str,rdi:int):
     ],
 
     "contact": [
-        "You can contact me via email at {{https://www.linkedin.com/in/kiran-punna-b50774330}}.",
-        "Feel free to connect with me on LinkedIn: {{https://www.linkedin.com/in/kiran-punna-b50774330}}",
-        "For professional inquiries, reach out at {{https://www.linkedin.com/in/kiran-punna-b50774330}}.",
-        "You can find my LinkedIn profile here: {{https://www.linkedin.com/in/kiran-punna-b50774330}}",
-        "The best way to contact me is email or LinkedIn.",
-        "Reach out anytime via {{EMAIL}} or LinkedIn.",
-        "I’m open to professional connections on LinkedIn.",
+
+    "You can contact me via [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330).",
+    "Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330).",
+    "For professional inquiries, reach out on [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330).",
+    "You can find my profile here: [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330).",
+    "The best way to contact me is via [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330).",
+
+        "I’m open to professional connections on [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330).",
         "For collaborations, email me at {{https://www.linkedin.com/in/kiran-punna-b50774330}}.",
-        "All contact details are available on LinkedIn.",
-        "Feel free to get in touch anytime!"
+        "All contact details are available on [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330).",
+        "Feel free to get in touch anytime! at [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330) or [Email](kiranpunna58@gmail.com)",
+         "The best way to contact me is via [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330)."
     ],
 
     "resume": [

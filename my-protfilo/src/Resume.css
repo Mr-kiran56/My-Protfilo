@@ -8,7 +8,7 @@
             text-align: right;
 
         }
-
+      
         .btn-resume {
             height: 40px;
             width: 250px;
@@ -27,11 +27,12 @@
         }
 
         .btn-resume:hover {
-            cursor: pointer;
-            transform: translateY(-2px);
-            background-color: transparent;
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
+    transform: translateY(-2px);
+    background: transparent;
+    color: black;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
 
         .resume-container {
 
