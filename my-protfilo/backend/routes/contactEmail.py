@@ -5,13 +5,14 @@ from sqlalchemy.orm import Session
 from backend import schema
 from datetime import datetime
 import smtplib
+from dotenv import load_dotenv
+import os
 from email.message import EmailMessage
-
+load_dotenv(dotenv_path=os.path.join(os.getcwd(), ".env"))
 router = APIRouter(prefix='/contact_email', tags=['Email_contact'])
 
-ADMIN_EMAIL = "kiranpunna58@gmail.com"
-APP_PASSWORD = "rpgauklwtlmvixku"
-
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
+APP_PASSWORD = os.getenv("APP_PASSWORD")
 @router.post("/email")
 def contact(request: schema.ContactDetail):
     # Create email message
