@@ -26,6 +26,16 @@ const handleSubmit = async (e) => {
       subject,
       message,
     });
+    
+     await api.post("/contact_email/email", {
+      firstname,
+      secondname,
+      email,
+      subject,
+      message,
+    });
+
+    
 
     setFirstname("");
     setSecondname("");

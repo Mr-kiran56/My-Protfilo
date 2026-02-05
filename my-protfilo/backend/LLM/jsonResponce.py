@@ -102,7 +102,7 @@ def  responceJson(intent:str,rdi:int):
     "The best way to contact me is via [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330).",
 
         "I’m open to professional connections on [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330).",
-        "For collaborations, email me at {{https://www.linkedin.com/in/kiran-punna-b50774330}}.",
+        "For collaborations, email me at[Email](kiranpunna58@gmail.com).",
         "All contact details are available on [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330).",
         "Feel free to get in touch anytime! at [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330) or [Email](kiranpunna58@gmail.com)",
          "The best way to contact me is via [LinkedIn](https://www.linkedin.com/in/kiran-punna-b50774330)."

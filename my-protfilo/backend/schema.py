@@ -1,5 +1,3 @@
-
-
 from pydantic import BaseModel, EmailStr, conint, Field
 from datetime import datetime
 from typing import Optional, List

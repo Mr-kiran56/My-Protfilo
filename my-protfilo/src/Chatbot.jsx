@@ -40,47 +40,97 @@ function Chatbot() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  // Speech Recognition Setup
+  // Speech Recognition Setup - FIXED DUPLICATION
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.lang = 'en-US';
-      recognitionRef.current.continuous = false;
+      recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
 
       recognitionRef.current.onresult = (event) => {
-        let transcript = '';
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
+        let interimTranscript = '';
+        let finalTranscript = '';
+        
+        // Loop through ALL results from the beginning (index 0)
+        for (let i = 0; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript + ' ';
+          } else {
+            interimTranscript += transcript;
+          }
         }
-        setInputValue(transcript);
+        
+        // Set the complete transcript (not appending to prev)
+        setInputValue((finalTranscript + interimTranscript).trim());
       };
 
-      recognitionRef.current.onend = () => setIsListening(false);
+      recognitionRef.current.onend = () => {
+        if (isListening) {
+          try {
+            recognitionRef.current.start();
+          } catch (e) {
+            console.log('Recognition restart prevented:', e);
+            setIsListening(false);
+          }
+        } else {
+          setIsListening(false);
+        }
+      };
+      
       recognitionRef.current.onerror = (e) => {
         console.error('Speech error:', e.error);
-        setIsListening(false);
+        if (e.error === 'no-speech' || e.error === 'audio-capture') {
+          console.log('Recoverable error, continuing...');
+        } else {
+          setIsListening(false);
+        }
+      };
+
+      recognitionRef.current.onstart = () => {
+        console.log('Speech recognition started');
       };
     }
-  }, []);
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, [isListening]);
 
   const toggleListening = () => {
     if (!recognitionRef.current) return alert('Speech Not Supported');
+    
     if (isListening) {
+      // STOP listening
       recognitionRef.current.stop();
       setIsListening(false);
     } else {
-      setInputValue('');
-      recognitionRef.current.start();
-      setIsListening(true);
+      // START listening
+      setInputValue(''); // Clear input before starting
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (e) {
+        console.error('Failed to start recognition:', e);
+        alert('Could not start voice recognition. Please try again.');
+      }
     }
   };
 
   // --- MODIFIED SEND HANDLER TO ACCEPT OPTIONAL TEXT ---
-const handleSend = async (manualText = null) => {
+  const handleSend = async (manualText = null) => {
     const textToSend = manualText || inputValue.trim();
     if (!textToSend) return;
+
+    // Stop listening if currently active
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
 
     // 1. Add User Message
     const userMessage = { type: 'user', content: textToSend };
@@ -247,15 +297,15 @@ const handleSend = async (manualText = null) => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Message Spirit AI..."
+          placeholder={isListening ? "🎤 Listening... (speak now)" : "Message Spirit AI..."}
           autoComplete="off"
-          disabled={isListening}
+          style={isListening ? { borderColor: '#ff4444', boxShadow: '0 0 8px rgba(255,68,68,0.5)' } : {}}
         />
         
         <button
           className={`icon-button mic-button ${isListening ? 'active' : ''}`}
           onClick={toggleListening}
-          title={isListening ? 'Stop' : 'Speak'}
+          title={isListening ? 'Stop Listening' : 'Start Voice Input'}
         >
           {isListening ? (
             <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 6h12v12H6z" /></svg>
@@ -267,7 +317,7 @@ const handleSend = async (manualText = null) => {
         <button
           className="icon-button send-button"
           onClick={() => handleSend()}
-          disabled={!inputValue.trim() || isListening}
+          disabled={!inputValue.trim()}
           title="Send"
         >
           <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>

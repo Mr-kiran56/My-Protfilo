@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from backend.Database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 # Ensure you are importing your routers correctly
-from backend.routes import contact, projects, comments, login, profie_upvote, project_upvote
+from backend.routes import contact, projects, comments, login, profie_upvote, project_upvote,contactEmail
 from backend.LLM import profileChatbot
 
 from contextlib import asynccontextmanager
@@ -61,6 +61,7 @@ app.include_router(login.router)
 app.include_router(profie_upvote.router)
 app.include_router(project_upvote.router)
 app.include_router(profileChatbot.router)
+app.include_router(contactEmail.router)
 
 @app.get("/")
 def load():
