@@ -9,6 +9,7 @@ function SideCard() {
     const alertBox = document.createElement("div");
     alertBox.className = "message-alert";
 
+
     alertBox.innerHTML = `
       <img class="ai-chat" src="/images/chat-ai.png" />
       <div class="alert-text">
