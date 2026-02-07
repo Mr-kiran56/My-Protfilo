@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = Path(
     os.getenv(
         "INTENT_MODEL_PATH",
-        "/app/backend/IntentLLM/profileIntentLLM"
+        "/app/IntentLLM/profileIntentLLM"
     )
 )
 # MODEL_PATH = BASE_DIR / "profileIntentLLM"
