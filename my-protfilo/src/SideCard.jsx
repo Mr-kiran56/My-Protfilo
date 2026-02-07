@@ -11,7 +11,7 @@ function SideCard() {
 
 
     alertBox.innerHTML = `
-      <img class="ai-chat" src="public/images/chat-ai.png" />
+      <img class="ai-chat" src="/images/chat-ai.png" />
       <div class="alert-text">
         <b>Chat with SpiritAI</b>
         <p>Get to know me better</p>
