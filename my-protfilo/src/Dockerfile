@@ -5,9 +5,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm cache clean --force && \
-    npm install && \
-    npm install -g vite @vitejs/plugin-react
+RUN npm install
 
 COPY . .
 
@@ -18,8 +16,8 @@ FROM nginx:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# nginx config (REAL PATH)
-COPY my-protfilo/src/nginx.conf /etc/nginx/conf.d/default.conf
+# nginx config IS IN SAME FOLDER
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
