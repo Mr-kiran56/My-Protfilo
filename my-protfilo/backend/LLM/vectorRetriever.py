@@ -17,7 +17,7 @@ def get_retriever():
     api_key = os.getenv("PINECONE_API_KEY")
     pc = Pinecone(api_key=api_key)
     
-    # 2. Find the Namespace (Where your data is hiding!)
+    # 2. Find the Namespace (Where your data is hiding!!)
     index = pc.Index(INDEX_NAME)
     stats = index.describe_index_stats()
     
