@@ -5,21 +5,14 @@ from Config import settings
 
 password = quote_plus(settings.password)
 
+POSTGRESQL_DATABASE = (
+    f"{settings.database}://"
+    f"{settings.database_user}:{password}"
+    f"@{settings.host}:{settings.database_port}"
+    f"/{settings.db_name}"
+)
 
-POSTGRESQL_DATABASE = f"{settings.database}://{settings.database_name}:{password}@{settings.host}/FastAPI"
-
-
-engine = create_engine(POSTGRESQL_DATABASE)
-
+engine = create_engine(POSTGRESQL_DATABASE, pool_pre_ping=True)
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
-
-
 Base = declarative_base()
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()

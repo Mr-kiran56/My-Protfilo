@@ -120,11 +120,8 @@ jobs:
           ECR_FRONTEND_REPO=${{ env.FRONTEND_REPO }}
           IMAGE_TAG=${{ env.IMAGE_TAG }}
 
-          NVIDIA_API_KEY=${{ secrets.NVIDIA_API_KEY }}
-          PINECONE_API_KEY=${{ secrets.PINECONE_API_KEY }}
-
           DATABASE=${{ secrets.DATABASE }}
-          DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+          DATABASE_USER=${{ secrets.DATABASE_USER }}
           PASSWORD=${{ secrets.PASSWORD }}
           HOST=${{ secrets.HOST }}
           DATABASE_PORT=${{ secrets.DATABASE_PORT }}
@@ -134,9 +131,13 @@ jobs:
           ALGORITHM=${{ secrets.ALGORITHM }}
           EXPIRE_TIME=${{ secrets.EXPIRE_TIME }}
 
+          NVIDIA_API_KEY=${{ secrets.NVIDIA_API_KEY }}
+          PINECONE_API_KEY=${{ secrets.PINECONE_API_KEY }}
+
           ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
           APP_PASSWORD=${{ secrets.APP_PASSWORD }}
           EOF
+
 
 
       - name: Pull latest images
