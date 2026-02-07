@@ -184,15 +184,15 @@ function Intro({ ShowAlert }) {
       <div className="profile-social-media">
         <div className="social-media-new">
           <a href="https://www.linkedin.com/in/kiran-punna-b50774330/" target="_blank" rel="noreferrer">
-            <img src="public/images/linkedin (1).png" alt="linkedin" />
+            <img src="/images/linkedin (1).png" alt="linkedin" />
           </a>
 
           <a href="https://github.com/Mr-kiran56" target="_blank" rel="noreferrer">
-            <img src="public/images/github.png" alt="github" />
+            <img src="/images/github.png" alt="github" />
           </a>
 
           <a href="https://leetcode.com/u/kiran_punna/" target="_blank" rel="noreferrer">
-            <img src="public/images/leetcode.png" alt="leetcode" />
+            <img src="/images/leetcode.png" alt="leetcode" />
           </a>
 
           <button className="upvote-wrapper"
