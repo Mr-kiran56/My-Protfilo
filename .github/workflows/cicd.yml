@@ -125,16 +125,16 @@ jobs:
 
       - name: Pull latest images
         run: |
-          docker compose --env-file .env -f docker-compose.prod.yml pull
+          docker compose --env-file .env -f my-protfilo/docker-compose.prod.yml pull
 
       - name: Deploy (NO HEALTH CHECKS)
         run: |
-          docker compose --env-file .env -f docker-compose.prod.yml down --remove-orphans
-          docker compose --env-file .env -f docker-compose.prod.yml up -d
+          docker compose --env-file .env -f my-protfilo/docker-compose.prod.yml down --remove-orphans
+          docker compose --env-file .env -f my-protfilo/docker-compose.prod.yml up -d
           sleep 10
 
       - name: Verify containers
         run: |
           docker ps
-          docker compose --env-file .env -f docker-compose.prod.yml logs backend --tail=20
-          docker compose --env-file .env -f docker-compose.prod.yml logs frontend --tail=20
+          docker compose --env-file .env -f my-protfilo/docker-compose.prod.yml logs backend --tail=20
+          docker compose --env-file .env -f my-protfilo/docker-compose.prod.yml logs frontend --tail=20
