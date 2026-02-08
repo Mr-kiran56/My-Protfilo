@@ -37,7 +37,7 @@ services:
     image: ${AWS_ECR_LOGIN_URI}/${ECR_FRONTEND_REPO}:${IMAGE_TAG}
     container_name: myprofile-frontend
     ports:
-      - "80:80"
+      - "3000:80"
     restart: unless-stopped
     depends_on:
       - backend
