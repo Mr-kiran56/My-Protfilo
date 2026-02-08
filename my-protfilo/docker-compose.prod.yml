@@ -6,7 +6,7 @@ services:
       - "8000:8000"
     restart: unless-stopped
     volumes:
-      - /home/ubuntu/models/profileIntentLLM:/models/profileIntentLLM
+      - /models:/models
 
 
     environment:
