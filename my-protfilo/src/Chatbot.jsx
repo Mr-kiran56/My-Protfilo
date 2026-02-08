@@ -143,7 +143,7 @@ function Chatbot() {
 
     try {
       const username = localStorage.getItem('username') || 'Guest';
-      const url = 'http://127.0.0.1:8000/protfiloChatbot/profilechatbotResponce';
+      const url = 'http://54.153.231.190/api/protfiloChatbot/profilechatbotResponce';
 
       const response = await fetch(url, {
         method: 'POST',
