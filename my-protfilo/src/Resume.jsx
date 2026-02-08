@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 
 function Resume(){
-const baseURL = "http://127.0.0.1:8000";
+const baseURL = "http://54.153.231.190/api";
 
 function downloadWord() {
   window.location.href = `${baseURL}/download-word`;

@@ -75,7 +75,7 @@
        .profile-social-media {
     position: absolute;
     top: 613px;
-    left: 310px;
+    left: 280px;
     display: flex;
     z-index: 10;
     pointer-events: auto;
