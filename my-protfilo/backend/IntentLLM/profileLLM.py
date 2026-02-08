@@ -20,10 +20,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = os.getenv("INTENT_MODEL_PATH")
 
-model_file = os.path.join(MODEL_PATH, "profileLLM.py")
+# model_file = os.path.join(MODEL_PATH, "profileLLM.py")
 
-if not os.path.exists(model_file):
-    raise RuntimeError(f"[IntentLLM] Model file not found: {model_file}")
+# if not os.path.exists(model_file):
+#     raise RuntimeError(f"[IntentLLM] Model file not found: {model_file}")
 
 LABEL_ENCODER_PATH = BASE_DIR / "label_encoder_p.pkl"
 
