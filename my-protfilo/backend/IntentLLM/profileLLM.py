@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = os.getenv("INTENT_MODEL_PATH")
+MODEL_PATH = Path(os.getenv("INTENT_MODEL_PATH", ""))
 
 # model_file = os.path.join(MODEL_PATH, "profileLLM.py")
 
