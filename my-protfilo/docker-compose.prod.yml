@@ -4,9 +4,10 @@ services:
     container_name: myprofile-backend
     ports:
       - "8000:8000"
-    restart: unless-stopped
     volumes:
-      - /models:/models
+      - /models:/models:ro 
+    restart: unless-stopped
+  
 
 
     environment:
