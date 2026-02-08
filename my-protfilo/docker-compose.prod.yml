@@ -5,25 +5,30 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+    volumes:
+      - /home/ubuntu/models/profileIntentLLM:/models/profileIntentLLM
+
+
     environment:
-      environment:
-      INTENT_MODEL_PATH: /app/backend/IntentLLM
+      INTENT_MODEL_PATH: /models/profileIntentLLM
       PYTHONPATH: /app
       PYTHONUNBUFFERED: "1"
-      NVIDIA_API_KEY: ${NVIDIA_API_KEY} 
-      PINECONE_API_KEY: ${PINECONE_API_KEY} 
-      DATABASE: ${DATABASE} 
-      DATABASE_USER: ${DATABASE_USER} 
-      PASSWORD: ${PASSWORD} 
-      HOST: ${HOST} 
-      DATABASE_PORT: ${DATABASE_PORT} 
-      DB_NAME: ${DB_NAME}     
 
-      SECRET_KEY: ${SECRET_KEY} 
-      ALGORITHM: ${ALGORITHM} 
-      EXPIRE_TIME: ${EXPIRE_TIME} 
-      ADMIN_EMAIL: ${ADMIN_EMAIL} 
-      APP_PASSWORD: ${APP_PASSWORD} 
+      NVIDIA_API_KEY: ${NVIDIA_API_KEY}
+      PINECONE_API_KEY: ${PINECONE_API_KEY}
+
+      DATABASE: ${DATABASE}
+      DATABASE_USER: ${DATABASE_USER}
+      PASSWORD: ${PASSWORD}
+      HOST: ${HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DB_NAME: ${DB_NAME}
+
+      SECRET_KEY: ${SECRET_KEY}
+      ALGORITHM: ${ALGORITHM}
+      EXPIRE_TIME: ${EXPIRE_TIME}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      APP_PASSWORD: ${APP_PASSWORD}
 
 
   frontend:
@@ -34,6 +39,3 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
-
-volumes:
-  uploads_data:
