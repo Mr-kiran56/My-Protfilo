@@ -65,3 +65,7 @@ cvzone>=1.6
 torch>=2.1
 torchvision>=0.16
 torchaudio>=2.1
+transformers
+huggingface_hub
+joblib
+numpy
