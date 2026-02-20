@@ -7,7 +7,7 @@ import os
 
 POSTGRESQL_DATABASE = os.getenv("DATABASE_URL")
 
-
+#new
 engine = create_engine(POSTGRESQL_DATABASE, pool_pre_ping=True)
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
