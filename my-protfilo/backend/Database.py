@@ -6,6 +6,7 @@ from Config import settings
 import os
 
 POSTGRESQL_DATABASE = os.getenv("DATABASE_URL")
+#given
 
 engine = create_engine(POSTGRESQL_DATABASE, pool_pre_ping=True)
 
