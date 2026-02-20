@@ -53,11 +53,6 @@ huggingface-hub>=0.22
 # ================= VECTOR DB =================
 pinecone>=3.0
 
-# ================= CV (OPTIONAL – see note below) =================
-opencv-python>=4.9
-ultralytics>=8.2
-cvzone>=1.6
-
 # ================= TORCH =================
 torch>=2.1
 torchvision>=0.16
