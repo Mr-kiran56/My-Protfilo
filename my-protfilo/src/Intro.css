@@ -570,7 +570,7 @@
     }
 
     .br-line {
-        margin-top: 60px;
+        margin-top: 200px;
         width: 90%;
     }
 }
@@ -629,6 +629,7 @@
     .social-media-new img {
         height: 35px;
         width: 35px;
+        margin-bottom: 130px;
     }
 
     .like-cmt {

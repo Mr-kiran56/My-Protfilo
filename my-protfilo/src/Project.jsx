@@ -39,7 +39,6 @@ export default function Projects() {
     
     if (isNaN(parsedUserId)) {
       console.error("Invalid user_id:", userId);
-      
       return;
     }
 
@@ -81,7 +80,6 @@ export default function Projects() {
 
     if (upvotedProjects.has(projectId)) {
       alert("You have already upvoted this project!");
-
       return;
     }
 
@@ -108,7 +106,6 @@ export default function Projects() {
         )
       );
 
-      
       toast.success(response.data.message || "Thanks for upvoting!");
     } catch (error) {
       console.error("Error upvoting:", error);
@@ -152,7 +149,6 @@ export default function Projects() {
         }
       );
 
-      // Use the comment_id returned from the backend
       const newComment = {
         id: response.data.comment_id,
         comment: commentText,
@@ -180,16 +176,13 @@ export default function Projects() {
       }));
 
       setCommentText("");
-      
       toast.success("Comment posted successfully!");
     } catch (error) {
       console.error("Error posting comment:", error);
       if (error.response?.status === 401) {
         alert("Session expired. Please login again.");
-
         window.location.href = "/login";
       } else {
-        
         toast.error(error.response?.data?.detail || "Failed to post comment. Please try again.");
       }
     } finally {
@@ -215,7 +208,6 @@ export default function Projects() {
         }
       });
 
-      // Update the project details state
       setProjectDetails(prev =>
         prev.map(project =>
           project.project_id === selectedProject.project_id
@@ -229,7 +221,6 @@ export default function Projects() {
         )
       );
 
-      // Update the selected project state
       setSelectedProject(prev => ({
         ...prev,
         project_comments: prev.project_comments.filter(
@@ -260,7 +251,6 @@ export default function Projects() {
     setCommentText("");
   };
 
-  // Check if the current user owns a comment
   const isCommentOwner = (commentUserId) => {
     const currentUserId = getUserId();
     if (!currentUserId) return false;
@@ -309,6 +299,7 @@ export default function Projects() {
                   </div>
                 </div>
 
+                {/* FIXED: counts are now inline spans, no more absolute-positioned h6 */}
                 <div className="project-actions">
                   <a
                     className="action-btn"
@@ -338,15 +329,9 @@ export default function Projects() {
                   >
                     <img src="/images/comments.png" alt="Comments" />
                   </button>
-                  <h6
-                    style={{
-                      marginTop: "43.9px",
-                      marginLeft: "128.2px",
-                      position: "absolute"
-                    }}
-                  >
+                  <span className="action-count">
                     {details.project_comments.length}
-                  </h6>
+                  </span>
 
                   <button
                     className="action-btn"
@@ -363,15 +348,9 @@ export default function Projects() {
                       alt="Like"
                     />
                   </button>
-                  <h6
-                    style={{
-                      marginTop: "43.9px",
-                      marginLeft: "186.2px",
-                      position: "absolute"
-                    }}
-                  >
+                  <span className="action-count">
                     {details.project_votes}
-                  </h6>
+                  </span>
                 </div>
               </div>
             </div>
@@ -499,7 +478,6 @@ export default function Projects() {
                         {comment.comment}
                       </p>
 
-                      {/* Show delete button only if user is logged in and owns the comment */}
                       {getToken() && isCommentOwner(comment.comments_user.user_id) && (
                         <button
                           onClick={() => handleDeleteComment(comment.id)}
@@ -514,9 +492,9 @@ export default function Projects() {
                           }}
                           title="Delete comment"
                         >
-                          <img 
-                            className="delete-comment" 
-                            src="/images/trash.png" 
+                          <img
+                            className="delete-comment"
+                            src="/images/trash.png"
                             alt="Delete"
                             style={{
                               width: "20px",
@@ -597,22 +575,11 @@ export default function Projects() {
 
             <style>{`
               @keyframes slideIn {
-                from {
-                  transform: translateX(-100%);
-                }
-                to {
-                  transform: translateX(0);
-                }
+                from { transform: translateX(-100%); }
+                to   { transform: translateX(0); }
               }
-
-              .hide-scroll {
-                scrollbar-width: none;      /* Firefox */
-                -ms-overflow-style: none;   /* IE / Edge */
-              }
-
-              .hide-scroll::-webkit-scrollbar {
-                display: none;              /* Chrome / Safari */
-              }
+              .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+              .hide-scroll::-webkit-scrollbar { display: none; }
             `}</style>
           </div>
         </>
@@ -620,8 +587,6 @@ export default function Projects() {
 
       <hr className="br-line" style={{ margin: "auto" }} />
       <Footer />
-
-    
     </>
   );
 }
