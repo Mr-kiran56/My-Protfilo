@@ -15,6 +15,7 @@ services:
       INTENT_MODEL_PATH: /models/profileIntentLLM
       PYTHONPATH: /app
       PYTHONUNBUFFERED: "1"
+      DATABASE_URL: ${DATABASE_URL}
 
       NVIDIA_API_KEY: ${NVIDIA_API_KEY}
       PINECONE_API_KEY: ${PINECONE_API_KEY}

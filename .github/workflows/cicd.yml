@@ -126,6 +126,7 @@ jobs:
           HOST=${{ secrets.HOST }}
           DATABASE_PORT=${{ secrets.DATABASE_PORT }}
           DB_NAME=${{ secrets.DB_NAME }}
+          DATABASE_URL=${{secrets.DATABASE_URL}}
 
           SECRET_KEY=${{ secrets.SECRET_KEY }}
           ALGORITHM=${{ secrets.ALGORITHM }}
