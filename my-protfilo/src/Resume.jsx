@@ -34,10 +34,14 @@ function downloadWord() {
                     <div className="job-duration">Nov 2025 – Present</div>
                 </div>
                 <ul>
-                    <li>Developed a personalized diet recommendation system using Python, Scikit-learn, TensorFlow, and Tesseract OCR</li>
-                    <li>Designed an OCR → preprocessing → feature engineering pipeline, improving accuracy by 22%</li>
-                    <li>Trained ML models achieving 89% accuracy</li>
-                    <li>Deployed as a FastAPI/Flask service with sub-second response time</li>
+                    <li>Built an end-to-end Medical Risk Classification and Personalized Diet Recommendation System using OCR-extracted    
+clinical data with robust DVC pipelines for data versioning and reproducible preprocessing workflows.</li>
+                    <li>Implemented ensemble models (XGBoost, Random Forest) achieving 99% accuracy, along with a pretrained BERT- 
+based medical intent classifier for precise query understanding.</li>
+                    <li>Designed a hallucination-free RAG framework with vector databases to generate personalized diet plans.</li>
+                    <li>Built with MLOps readiness using GitHub Actions CI/CD and AWS for scalable deployment, monitoring,and 
+continuous improvement. </li>
+
                 </ul>
             </div>
         </div>
