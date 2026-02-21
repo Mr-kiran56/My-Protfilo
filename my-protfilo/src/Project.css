@@ -1,17 +1,5 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-
-body {
-  background-color: #f3f3f3;
-  font-family: "Montserrat", sans-serif;
-  overflow-x: hidden;
-  position: relative;
-}
-
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background-color: #f3f3f3; font-family: "Montserrat", sans-serif; overflow-x: hidden; position: relative; }
 
 .projects-container {
   max-width: 1200px;
@@ -33,19 +21,15 @@ body {
 }
 
 @keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 
 .project-card {
   width: 100%;
   max-width: 1000px;
-  /* FIXED: min-height instead of fixed height so card grows with content */
-  min-height: 380px;
+  /* height is now flexible — grows with content */
   height: auto;
+  min-height: 300px;
   margin: 0 auto 70px;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
@@ -60,11 +44,14 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+@keyframes smoothFadeUp {
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
 .project-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
-
 
 .project-card::before {
   content: "";
@@ -78,75 +65,55 @@ body {
   transition: opacity 0.3s ease;
 }
 
-.project-card:hover::before {
-  opacity: 1;
-}
+.project-card:hover::before { opacity: 1; }
 
-@keyframes smoothFadeUp {
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-
+/* Grid: image is fixed width; info column stretches */
 .project-content {
   display: grid;
   grid-template-columns: 360px 1fr;
-  /* FIXED: min-height so both columns stretch together */
-  min-height: 380px;
+  /* stretch both cells to fill the card's natural height */
+  align-items: stretch;
 }
 
-
+/* Image fills its column completely */
 .project-image-container {
   position: relative;
   width: 360px;
-  /* FIXED: stretches to full card height */
-  min-height: 380px;
+  /* min-height so very short cards still look good */
+  min-height: 280px;
+  /* height: 100% makes the image column match the info column */
+  height: 100%;
   overflow: hidden;
 }
 
-/* FIXED: absolute so image always fills the container regardless of card height */
 .project-image-container img {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
   display: block;
+  transition: transform 0.6s ease;
 }
 
-.project-card:hover .project-image-container img {
-  transform: scale(1.1);
-}
-
+.project-card:hover .project-image-container img { transform: scale(1.08); }
 
 .project-image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(102, 126, 234, 0.3),
-    rgba(118, 75, 162, 0.3)
-  );
+  background: linear-gradient(135deg, rgba(102,126,234,0.3), rgba(118,75,162,0.3));
   opacity: 0;
   transition: opacity 0.4s ease;
-  z-index: 1;
 }
 
-.project-card:hover .project-image-overlay {
-  opacity: 1;
-}
+.project-card:hover .project-image-overlay { opacity: 1; }
 
-
+/* Info panel: flex column, natural height */
 .project-info {
   padding: 36px 42px;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
+  /* no fixed height — grows with content */
 }
 
 .project-number {
@@ -156,29 +123,27 @@ body {
   font-size: 60px;
   font-weight: 900;
   color: rgba(102, 126, 234, 0.12);
+  line-height: 1;
+  pointer-events: none;
 }
-
 
 .project-title {
   font-size: 22px;
   font-weight: 700;
   color: #222;
-  margin-bottom: 12px;
 }
 
-/* FIXED: removed max-height and overflow:hidden — full description now visible */
 .project-description {
   font-size: 15px;
   line-height: 1.6;
   color: #555;
-  margin-bottom: 18px;
+  /* removed max-height / overflow:hidden — text is fully visible */
 }
-
 
 .project-tech-label {
   font-size: 14px;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .tech-stack {
@@ -187,19 +152,14 @@ body {
   gap: 10px;
 }
 
-
 .tech-tag {
   padding: 6px 14px;
   font-size: 13px;
   font-weight: 600;
   border-radius: 18px;
   color: #555;
-  background: linear-gradient(
-    135deg,
-    rgba(102, 126, 234, 0.15),
-    rgba(118, 75, 162, 0.15)
-  );
-  border: 2px solid rgba(102, 126, 234, 0.3);
+  background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(118,75,162,0.15));
+  border: 2px solid rgba(102,126,234,0.3);
   transition: all 0.3s ease;
 }
 
@@ -210,13 +170,20 @@ body {
   border-color: transparent;
 }
 
-
+/* Actions row sits at the bottom naturally */
 .project-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 18px;
-  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.action-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  min-width: 16px;
 }
 
 .action-btn {
@@ -229,6 +196,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .action-btn img {
@@ -236,7 +204,6 @@ body {
   height: 20px;
   transition: transform 0.3s ease;
 }
-
 
 .action-btn:hover {
   background: linear-gradient(135deg, #667eea, #764ba2);
@@ -249,45 +216,21 @@ body {
   transform: scale(1.1);
 }
 
-.action-btn.like {
-  border-color: rgba(255, 105, 135, 0.3);
-}
+.action-btn.like { border-color: rgba(255, 105, 135, 0.3); }
+.action-btn.like:hover { background: linear-gradient(135deg, #ff6987, #ff4d6d); }
 
-.action-btn.like:hover {
-  background: linear-gradient(135deg, #ff6987, #ff4d6d);
-}
-
-/* FIXED: inline count label replacing the absolute-positioned h6 */
-.action-count {
-  font-size: 13px;
-  font-weight: 600;
-  color: #555;
-  margin-left: -6px;
-}
-
-
+/* Responsive */
 @media (max-width: 900px) {
-  .project-card {
-    height: auto;
-    min-height: unset;
-  }
-
   .project-content {
     grid-template-columns: 1fr;
-    min-height: unset;
   }
 
   .project-image-container {
     width: 100%;
-    height: 240px;
-    min-height: unset;
-  }
-
-  .project-image-container img {
-    position: absolute;
+    min-height: 220px;
+    height: 220px;
   }
 }
-
 
 .delete-comment {
   height: 20px;
