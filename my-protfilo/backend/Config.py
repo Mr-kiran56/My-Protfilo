@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     password: str                    # DB password
     host: str                        # localhost / RDS host
     database_port: int               # 5432
-    db_name: str                     # myprofiledb =
+    db_name: str                     # myprofiledb 
 
     secret_key: str
     algorithm: str
