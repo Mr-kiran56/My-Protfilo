@@ -31,7 +31,7 @@ function downloadWord() {
             <div className="content-card">
                 <div className="job-header">
                     <div className="job-title">Infosys Springboard — AIML Intern</div>
-                    <div className="job-duration">Nov 2025 – Present</div>
+                    <div className="job-duration">Nov 2025 – Feb 2026</div>
                 </div>
                 <ul>
                     <li>Built an end-to-end Medical Risk Classification and Personalized Diet Recommendation System using OCR-extracted    
